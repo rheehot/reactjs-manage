@@ -18,7 +18,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-const databaseURL="https://customer-5b5d0.firebaseio.com/"
+const databaseURL="https://customer-5b5d0.firebaseio.com"
 
 const styles = theme => ({
     root: {
@@ -96,10 +96,6 @@ class CustomerCell extends React.Component{
         this.setState({customers: nextState});
       })
     }
-
-    shouldComponentUpdate(nextProps, nextState){
-      return nextState.customers !== this.state.customer
-    }
   
     componentDidMount(){
       this.timer = setInterval*(this.progress, 20);
@@ -165,15 +161,14 @@ class CustomerCell extends React.Component{
                             <TableCell>{customer.name}</TableCell>
                             <TableCell>{customer.birth}</TableCell>
                             <TableCell>{customer.adress}</TableCell>
-                            <TableCell>{customer.phone}</TableCell>                          
+                            <TableCell>{customer.phone}</TableCell>
+                            <TableCell><Button varient="outlined" color="primary" onClick={() => this.handleDelete(id)}>삭제</Button></TableCell>
                       </TableRow>
                   );
                 }) : 
-                <TableRow>
                   <TableCell colSpan="6" align="center">
                     <CircularProgress className={classes.progress} varient="determinate" value={this.state.completed}/>
-                  </TableCell>
-                </TableRow>}
+                  </TableCell>}
                 </TableBody>
               </Table>
           </Paper>

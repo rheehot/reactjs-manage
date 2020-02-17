@@ -42,7 +42,7 @@ class AppNav extends React.Component{
                         </Link>
                     </MenuItem>
                     <MenuItem onClick={this.handleDrawerToggle}>
-                        <Link component ={RouterLink} to="/CustomerCell">
+                        <Link component ={RouterLink} to="/Customer">
                             고객정보
                         </Link>
                     </MenuItem>
