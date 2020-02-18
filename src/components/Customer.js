@@ -65,10 +65,10 @@ class Customer extends React.Component{
     }
 
     //데이터 추가
-    _post(customers){
+    _post(customer){
       return fetch(`${databaseURL}/customers.json`,{
         method:'POST',
-        body: JSON.stringify(customers)
+        body: JSON.stringify(customer)
       }).then(res => {
         if(res.status !== 200){
           throw new Error(res.statusText);
@@ -76,7 +76,7 @@ class Customer extends React.Component{
         return res.json();
       }).then(data => {
         let nextState = this.state.customer;
-        nextState[data.name] = customers;
+        nextState[data.name] = customer;
         this.setState({customers: nextState});
       })
     }
@@ -130,7 +130,7 @@ class Customer extends React.Component{
         phone: this.state.phone
       }
       this.handleDialogToggle();
-      if (!customer.image && customer.name && customer.birth && customer.adress && customer.phone){
+      if (!customer.image && !customer.name && !customer.birth && !customer.adress && !customer.phone){
         return;
       }
       this._post(customer);
