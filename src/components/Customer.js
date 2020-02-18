@@ -39,12 +39,12 @@ const styles = theme => ({
     }
   });
 
-class CustomerCell extends React.Component{
+class Customer extends React.Component{
   
   constructor(){
     super();
     this.state={
-      customers:{},
+      customer:{},
       dialog: false,
       image: '',
       name: '',
@@ -70,12 +70,12 @@ class CustomerCell extends React.Component{
         method:'POST',
         body: JSON.stringify(customers)
       }).then(res => {
-        if(res.status != 200){
+        if(res.status !== 200){
           throw new Error(res.statusText);
         }
         return res.json();
       }).then(data => {
-        let nextState = this.state.customers;
+        let nextState = this.state.customer;
         nextState[data.name] = customers;
         this.setState({customers: nextState});
       })
@@ -86,7 +86,7 @@ class CustomerCell extends React.Component{
       return fetch(`${databaseURL}/customers/${id}.json`,{
         method:'DELETE'
       }).then(res=>{
-        if(res.status != 200){
+        if(res.status !== 200){
           throw new Error(res.statusText);
         }
         return res.json();
@@ -166,9 +166,11 @@ class CustomerCell extends React.Component{
                       </TableRow>
                   );
                 }) : 
-                  <TableCell colSpan="6" align="center">
-                    <CircularProgress className={classes.progress} varient="determinate" value={this.state.completed}/>
-                  </TableCell>}
+                    <TableRow>
+                      <TableCell colSpan="6" align="center">
+                        <CircularProgress className={classes.progress} varient="determinate" value={this.state.completed}/>
+                      </TableCell>
+                    </TableRow>}
                 </TableBody>
               </Table>
           </Paper>
@@ -194,4 +196,4 @@ class CustomerCell extends React.Component{
     }
   }
   
-export default withStyles (styles) (CustomerCell)
+export default withStyles (styles) (Customer)
