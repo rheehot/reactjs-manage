@@ -46,7 +46,6 @@ class Customer extends React.Component{
     this.state={
       customer:{},
       dialog: false,
-      image: '',
       name: '',
       birth: '',
       adress: '',
@@ -123,14 +122,13 @@ class Customer extends React.Component{
 
     handleSumbit = () => {
       const customer = {
-        image: this.state.image,
         name: this.state.name,
         birth: this.state.birth,
         adress: this.state.adress,
         phone: this.state.phone
       }
       this.handleDialogToggle();
-      if (!customer.image && !customer.name && !customer.birth && !customer.adress && !customer.phone){
+      if (!customer.name && !customer.birth && !customer.adress && !customer.phone){
         return;
       }
       this._post(customer);
@@ -144,7 +142,6 @@ class Customer extends React.Component{
               <Table className={classes.table}>
                 <TableHead>
                   <TableRow>
-                    <TableCell>이미지</TableCell>
                     <TableCell>이름</TableCell>
                     <TableCell>생일</TableCell>
                     <TableCell>주소</TableCell>
@@ -157,7 +154,6 @@ class Customer extends React.Component{
                   const customer = this.state.customers[id];
                   return(
                       <TableRow key={id}>
-                            <TableCell><img src={customer.image} alt="profile"/></TableCell>
                             <TableCell>{customer.name}</TableCell>
                             <TableCell>{customer.birth}</TableCell>
                             <TableCell>{customer.adress}</TableCell>
@@ -180,7 +176,6 @@ class Customer extends React.Component{
           <Dialog open={this.state.dialog} onClose={this.handleDialogToggle}>
             <DialogTitle>고객 추가</DialogTitle>
             <DialogContent>
-              <TextField label="이미지" type="text" name="image" value={this.state.image} onChange={this.handleValueChange}/><br/>
               <TextField label="이름" type="text" name="name" value={this.state.name} onChange={this.handleValueChange}/><br/>
               <TextField label="생일" type="text" name="birth" value={this.state.birth} onChange={this.handleValueChange}/><br/>
               <TextField label="주소" type="text" name="adress" value={this.state.adress} onChange={this.handleValueChange}/><br/>
