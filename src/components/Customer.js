@@ -39,28 +39,33 @@ const styles = theme => ({
     }
   });
 
-class Customer extends React.Component{
+class customer extends React.Component{
   
   constructor(){
     super();
     this.state={
-      customer:{},
+      customers: {},
       dialog: false,
       name: '',
       birth: '',
       adress: '',
-      phone: ''
+      phone: '',
+      completed: 0
     }
   }
-  
+
     //데이터 불러오기
-    _get(){
+    _get = async() => {
       fetch(`${databaseURL}/customers.json`).then(res=>{
         if(res.status !== 200){
-          throw new Error(res.statusTest);
+          throw new Error(res.statusText);
         }
         return res.json();
-      }).then(customers => this.setState({customers: customers}));
+      }).then(customers => this.setState({customers: customers}))
+      .catch(err => console.log(err));
+      const responce = await fetch(`${databaseURL}/customers.json`);
+      const body = await responce.json();
+      return body;
     }
 
     //데이터 추가
@@ -73,11 +78,11 @@ class Customer extends React.Component{
           throw new Error(res.statusText);
         }
         return res.json();
-      }).then(data => {
-        let nextState = this.state.customer;
-        nextState[data.name] = customer;
+      }).then(() => {
+        let nextState = this.state.customers;
         this.setState({customers: nextState});
-      })
+        this.componentDidMount();
+      });
     }
 
     //데이터 삭제
@@ -93,27 +98,32 @@ class Customer extends React.Component{
         let nextState = this.state.customers;
         delete nextState[id];
         this.setState({customers: nextState});
-      })
+        this.componentDidMount();
+      });
     }
   
+    progress = () => {
+      const {completed} = this.state;
+      this.setState({completed: completed >= 100? 0 : completed + 1})
+    }
+
     componentDidMount(){
       this.timer = setInterval*(this.progress, 20);
-      this._get();
+      this._get()
+    }
+
+    UNSAFE_componentWillMount(){
+      clearInterval(this.timer);
     }
 
     handleDialogToggle = () => this.setState({
       dialog: !this.state.dialog
-    })
+    });
 
     handleValueChange = (e) => {
       let nextState = {};
       nextState[e.target.name] = e.target.value;
       this.setState(nextState);
-    }
-
-    progress = () => {
-      const { completed } = this.state;
-      this.setState({ completed: completed >= 100? 0 : completed + 1});
     }
 
     handleDelete = (id) => {
@@ -160,9 +170,9 @@ class Customer extends React.Component{
                             <TableCell>{customer.phone}</TableCell>
                             <TableCell><Button varient="outlined" color="primary" onClick={() => this.handleDelete(id)}>삭제</Button></TableCell>
                       </TableRow>
-                  );
+                  )
                 }) : 
-                    <TableRow>
+                <TableRow>
                       <TableCell colSpan="6" align="center">
                         <CircularProgress className={classes.progress} varient="determinate" value={this.state.completed}/>
                       </TableCell>
@@ -182,7 +192,7 @@ class Customer extends React.Component{
               <TextField label="번호" type="text" name="phone" value={this.state.phone} onChange={this.handleValueChange}/><br/>
             </DialogContent>
             <DialogActions>
-              <Button varient="contained" color="primary" onClick={this.handleSumbit}>추가</Button>
+              <Button varient="contained" color="primary" onClick={() => this.handleSumbit()}>추가</Button>
               <Button varient="outlined" color="primary" onClick={this.handleDialogToggle}>닫기</Button>
             </DialogActions>
           </Dialog>
@@ -191,4 +201,4 @@ class Customer extends React.Component{
     }
   }
   
-export default withStyles (styles) (Customer)
+export default withStyles (styles) (customer)

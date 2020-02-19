@@ -1,7 +1,7 @@
 import React from 'react';
 import { HashRouter as Router,Route} from 'react-router-dom'; 
 import AppNav from './components/AppNav';
-import CustomerCell from './components/Customer';
+import customer from './components/customer';
 import Home from './components/Home';
 import './App.css';
 
@@ -13,7 +13,7 @@ class App extends React.Component{
           <AppNav>
             <div>
               <Route exact path="/" component={Home}/>
-              <Route exact path="/Customer" component={CustomerCell}/>
+              <Route exact path="/customer" component={customer}/>
             </div>
           </AppNav>
         </Router>
