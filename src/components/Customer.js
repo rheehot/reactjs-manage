@@ -53,15 +53,6 @@ class customer extends React.Component{
     }
   }
 
-  clear = () => { 
-    this.setState({
-      name: '',
-      birth: '',
-      adress: '',
-      phone: '',
-    })
-  }
-
     //데이터 불러오기
     _get = async() => {
       fetch(`${databaseURL}/customers.json`).then(res=>{
@@ -93,6 +84,39 @@ class customer extends React.Component{
       });
     }
 
+    clear = () => { 
+      this.setState({
+        name: '',
+        birth: '',
+        adress: '',
+        phone: '',
+      })
+    }
+
+    handleDialogToggle = () => this.setState({
+      dialog: !this.state.dialog
+    });
+
+    handleValueChange = (e) => {
+      let nextState = {};
+      nextState[e.target.name] = e.target.value;
+      this.setState(nextState);
+    }
+
+    handleSumbit = () => {
+      const customer = {
+        name: this.state.name,
+        birth: this.state.birth,
+        adress: this.state.adress,
+        phone: this.state.phone
+      }
+      this.handleDialogToggle();
+      if (!customer.name && !customer.birth && !customer.adress && !customer.phone){
+        return;
+      }
+        this._post(customer);
+    }
+
     //데이터 삭제
     _delete(id){
       return fetch(`${databaseURL}/customers/${id}.json`,{
@@ -109,7 +133,13 @@ class customer extends React.Component{
         this.componentDidMount();
       });
     }
-  
+    
+    handleDelete = (id) => {
+      this._delete(id);
+    }
+
+    //로딩 및 추가,삭제 시 데이터 새로고침
+
     progress = () => {
       const {completed} = this.state;
       this.setState({completed: completed >= 100? 0 : completed + 1})
@@ -124,34 +154,6 @@ class customer extends React.Component{
       clearInterval(this.timer);
     }
 
-    handleDialogToggle = () => this.setState({
-      dialog: !this.state.dialog
-    });
-
-    handleValueChange = (e) => {
-      let nextState = {};
-      nextState[e.target.name] = e.target.value;
-      this.setState(nextState);
-    }
-
-    handleDelete = (id) => {
-      this._delete(id);
-    }
-
-    handleSumbit = () => {
-      const customer = {
-        name: this.state.name,
-        birth: this.state.birth,
-        adress: this.state.adress,
-        phone: this.state.phone
-      }
-      this.handleDialogToggle();
-      if (!customer.name && !customer.birth && !customer.adress && !customer.phone){
-        return;
-      }
-        this._post(customer);
-    }
-  
     render(){
       const {classes} = this.props;
       return(
