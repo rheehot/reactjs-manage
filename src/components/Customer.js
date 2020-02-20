@@ -16,6 +16,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContentText from '@material-ui/core/DialogContentText';
 
 const databaseURL="https://customer-5b5d0.firebaseio.com"
 
@@ -45,6 +46,7 @@ class customer extends React.Component{
     this.state={
       customers: {},
       dialog: false,
+      dialogdel: false,
       name: '',
       birth: '',
       adress: '',
@@ -138,6 +140,11 @@ class customer extends React.Component{
       this._delete(id);
     }
 
+    delToggle = () => this.setState({
+      dialogdel: !this.state.dialogdel
+    });
+
+
     //로딩 및 추가,삭제 시 데이터 새로고침
 
     progress = () => {
@@ -153,6 +160,8 @@ class customer extends React.Component{
     UNSAFE_componentWillMount(){
       clearInterval(this.timer);
     }
+
+    //<Button varient="outlined" color="primary" onClick={() => this.handleDelete(id)}>삭제</Button>
 
     render(){
       const {classes} = this.props;
@@ -178,7 +187,16 @@ class customer extends React.Component{
                             <TableCell>{customer.birth}</TableCell>
                             <TableCell>{customer.adress}</TableCell>
                             <TableCell>{customer.phone}</TableCell>
-                            <TableCell><Button varient="outlined" color="primary" onClick={() => this.handleDelete(id)}>삭제</Button></TableCell>
+                            <TableCell><Button varient="outlined" color="primary" onClick={this.delToggle}>삭제</Button></TableCell>
+                            <Dialog open={this.state.dialogdel} onClose={this.delToggle}>
+                              <DialogTitle>경고</DialogTitle>
+                              <DialogContent>
+                                <DialogContentText>{customer.name}님의 정보를 삭제하시겠습니까?</DialogContentText>
+                                <DialogActions>
+                                <Button varient="outlined" color="primary" onClick={() => this.handleDelete(id)}>예</Button><Button onClick={this.delToggle}>아니오</Button>
+                                </DialogActions>
+                              </DialogContent>
+                            </Dialog>
                       </TableRow>
                   )
                 }) : 
