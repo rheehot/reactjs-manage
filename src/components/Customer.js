@@ -53,6 +53,15 @@ class customer extends React.Component{
     }
   }
 
+  clear = () => { 
+    this.setState({
+      name: '',
+      birth: '',
+      adress: '',
+      phone: '',
+    })
+  }
+
     //데이터 불러오기
     _get = async() => {
       fetch(`${databaseURL}/customers.json`).then(res=>{
@@ -141,7 +150,6 @@ class customer extends React.Component{
         return;
       }
         this._post(customer);
-
     }
   
     render(){
@@ -192,7 +200,7 @@ class customer extends React.Component{
               <TextField label="번호" type="text" name="phone" value={this.state.phone} onChange={this.handleValueChange}/><br/>
             </DialogContent>
             <DialogActions>
-              <Button varient="contained" color="primary" onClick={this.handleSumbit}>추가</Button>
+              <Button varient="contained" color="primary" onClick={() => {this.handleSumbit(); this.clear()}}>추가</Button>
               <Button varient="outlined" color="primary" onClick={this.handleDialogToggle}>닫기</Button>
             </DialogActions>
           </Dialog>
