@@ -18,6 +18,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import InputBase from '@material-ui/core/InputBase';
+import SnackBar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 const databaseURL="https://customer-5b5d0.firebaseio.com"
 
@@ -59,6 +61,8 @@ class customer extends React.Component{
       customers: {},
       dialogadd: false,
       dialogdel: false,
+      delAlert: false,
+      delSetAlert: false,
       name: '',
       birth: '',
       adress: '',
@@ -66,6 +70,7 @@ class customer extends React.Component{
       completed: 0,
       searchKeyword: ''
     };
+    this.searchValueChange = this.searchValueChange.bind(this);
   }
 
     //데이터 불러오기
@@ -157,9 +162,10 @@ class customer extends React.Component{
       this._delete(id);
     }
 
-    delToggle = () => this.setState({
-      dialogdel: !this.state.dialogdel
-    });
+
+      delToggle = () => this.setState({dialogdel: !this.state.dialogdel});
+
+    //알림
 
     //로딩 및 추가,삭제 시 데이터 새로고침
 
@@ -179,9 +185,9 @@ class customer extends React.Component{
 
     //검색
     searchValueChange(e) {
-      let nextState = {};
-      nextState[e.target.name] = e.target.value;
-      this.setState(nextState);
+      this.setState({
+        keyword: e.target.value
+      });
     }
 
     //랜더(표시)
@@ -190,8 +196,8 @@ class customer extends React.Component{
       const cellList = ["이름","생일","주소","전화번호","설정"]
       return(
         <div className={classes.root}>
-          <InputBase className={classes.searchBar}>검색</InputBase>
-          <Paper className={classes.paper}>
+          <InputBase name="searchKeyword" placeholder="검색" className={classes.searchBar} value={this.state.searchKeyword} onChange={this.handleValueChange}/>
+          <Paper className={classes.paper} elevation={3}>
               <Table className={classes.table}>
                 <TableHead>
                   <TableRow>
@@ -215,7 +221,7 @@ class customer extends React.Component{
                                 <DialogContent>
                                   <DialogContentText>고객정보를 삭제하시겠습니까?</DialogContentText>
                                   <DialogActions>
-                                    <Button variant="contained" color="secondary" onClick={() => this.handleDelete(id)}>예</Button>
+                                    <Button variant="contained" color="secondary" onClick={() => {this.handleDelete(id)}}>예</Button>
                                     <Button variant="outlined" color="primary" onClick={this.delToggle}>아니오</Button>
                                   </DialogActions>
                                 </DialogContent>
