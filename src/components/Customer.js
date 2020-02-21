@@ -17,6 +17,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import { KeyboardDateTimePicker } from "@material-ui/pickers";
 
 const databaseURL="https://customer-5b5d0.firebaseio.com"
 
@@ -25,6 +26,10 @@ const styles = theme => ({
       width: '100%',
       marginTop: theme.spacing(3),
       overflowX: "auto"
+    },
+    paper:{
+      marginLeft:18,
+      marginRight:18
     },
     table:{
       minWidth: 1080
@@ -36,24 +41,27 @@ const styles = theme => ({
       position: 'fixed',
       bottom: '20px',
       right: '20px'
+    },
+    tableHead: {
+      fontSize: '1.0rem'
     }
   });
 
 class customer extends React.Component{
-  
   constructor(){
     super();
     this.state={
       customers: {},
-      dialog: false,
+      dialogadd: false,
       dialogdel: false,
       name: '',
       birth: '',
       adress: '',
       phone: '',
       completed: 0
-    }
+    };
   }
+  
 
     //데이터 불러오기
     _get = async() => {
@@ -96,7 +104,7 @@ class customer extends React.Component{
     }
 
     handleDialogToggle = () => this.setState({
-      dialog: !this.state.dialog
+      dialogadd: !this.state.dialogadd
     });
 
     handleValueChange = (e) => {
@@ -120,6 +128,9 @@ class customer extends React.Component{
     }
 
     //데이터 삭제
+
+      //<Button variant="outlined" color="primary" onClick={() => this.handleDelete(id)}>삭제</Button>
+
     _delete(id){
       return fetch(`${databaseURL}/customers/${id}.json`,{
         method:'DELETE'
@@ -137,13 +148,13 @@ class customer extends React.Component{
     }
     
     handleDelete = (id) => {
+      this.delToggle();
       this._delete(id);
     }
 
     delToggle = () => this.setState({
       dialogdel: !this.state.dialogdel
     });
-
 
     //로딩 및 추가,삭제 시 데이터 새로고침
 
@@ -161,21 +172,22 @@ class customer extends React.Component{
       clearInterval(this.timer);
     }
 
-    //<Button varient="outlined" color="primary" onClick={() => this.handleDelete(id)}>삭제</Button>
+    //검색
 
+
+    //랜더(표시)
     render(){
       const {classes} = this.props;
+      const cellList = ["이름","생일","주소","전화번호","설정"]
       return(
-        <div>
-          <Paper className={classes.root}>
+        <div className={classes.root}>
+          <Paper className={classes.paper}>
               <Table className={classes.table}>
                 <TableHead>
                   <TableRow>
-                    <TableCell>이름</TableCell>
-                    <TableCell>생일</TableCell>
-                    <TableCell>주소</TableCell>
-                    <TableCell>전화번호</TableCell>
-                    <TableCell>설정</TableCell>
+                    {cellList.map(c => {
+                      return <TableCell className={classes.tableHead} key={c}>{c}</TableCell>
+                    })}
                   </TableRow>
                 </TableHead> 
                 <TableBody>
@@ -187,22 +199,23 @@ class customer extends React.Component{
                             <TableCell>{customer.birth}</TableCell>
                             <TableCell>{customer.adress}</TableCell>
                             <TableCell>{customer.phone}</TableCell>
-                            <TableCell><Button varient="outlined" color="primary" onClick={this.delToggle}>삭제</Button></TableCell>
-                            <Dialog open={this.state.dialogdel} onClose={this.delToggle}>
-                              <DialogTitle>경고</DialogTitle>
-                              <DialogContent>
-                                <DialogContentText>{customer.name}님의 정보를 삭제하시겠습니까?</DialogContentText>
-                                <DialogActions>
-                                <Button varient="outlined" color="primary" onClick={() => this.handleDelete(id)}>예</Button><Button onClick={this.delToggle}>아니오</Button>
-                                </DialogActions>
-                              </DialogContent>
-                            </Dialog>
+                            <TableCell><Button variant="contained" color="secondary" onClick={this.delToggle}>삭제</Button></TableCell>
+                              <Dialog open={this.state.dialogdel} onClose={this.delToggle}>
+                                <DialogTitle>경고</DialogTitle>
+                                <DialogContent>
+                                  <DialogContentText>고객정보를 삭제하시겠습니까?</DialogContentText>
+                                  <DialogActions>
+                                    <Button variant="contained" color="secondary" onClick={() => this.handleDelete(id)}>예</Button>
+                                    <Button variant="outlined" color="primary" onClick={this.delToggle}>아니오</Button>
+                                  </DialogActions>
+                                </DialogContent>
+                              </Dialog>
                       </TableRow>
                   )
                 }) : 
                 <TableRow>
                       <TableCell colSpan="6" align="center">
-                        <CircularProgress className={classes.progress} varient="determinate" value={this.state.completed}/>
+                        <CircularProgress className={classes.progress} value={this.state.completed}/>
                       </TableCell>
                     </TableRow>}
                 </TableBody>
@@ -211,17 +224,18 @@ class customer extends React.Component{
           <Fab color="primary" className={classes.fab} onClick={this.handleDialogToggle}>
             <AddIcon/>
           </Fab>
-          <Dialog open={this.state.dialog} onClose={this.handleDialogToggle}>
+          <Dialog open={this.state.dialogadd} onClose={this.handleDialogToggle}>
             <DialogTitle>고객 추가</DialogTitle>
             <DialogContent>
+              <DialogContentText>고객정보를 추가합니다.</DialogContentText>
               <TextField label="이름" type="text" name="name" value={this.state.name} onChange={this.handleValueChange}/><br/>
               <TextField label="생일" type="text" name="birth" value={this.state.birth} onChange={this.handleValueChange}/><br/>
               <TextField label="주소" type="text" name="adress" value={this.state.adress} onChange={this.handleValueChange}/><br/>
               <TextField label="번호" type="text" name="phone" value={this.state.phone} onChange={this.handleValueChange}/><br/>
             </DialogContent>
             <DialogActions>
-              <Button varient="contained" color="primary" onClick={() => {this.handleSumbit(); this.clear()}}>추가</Button>
-              <Button varient="outlined" color="primary" onClick={this.handleDialogToggle}>닫기</Button>
+              <Button variant="contained" color="primary" onClick={() => {this.handleSumbit(); this.clear()}}>추가</Button>
+              <Button variant="outlined" color="primary" onClick={this.handleDialogToggle}>닫기</Button>
             </DialogActions>
           </Dialog>
         </div>
