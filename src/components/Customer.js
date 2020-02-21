@@ -17,7 +17,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import { KeyboardDateTimePicker } from "@material-ui/pickers";
+import InputBase from '@material-ui/core/InputBase';
 
 const databaseURL="https://customer-5b5d0.firebaseio.com"
 
@@ -25,7 +25,8 @@ const styles = theme => ({
     root: {
       width: '100%',
       marginTop: theme.spacing(3),
-      overflowX: "auto"
+      overflowX: "auto",
+      minWidth: 1080
     },
     paper:{
       marginLeft:18,
@@ -44,6 +45,10 @@ const styles = theme => ({
     },
     tableHead: {
       fontSize: '1.0rem'
+    },
+    searchBar: {
+      marginLeft: 18,
+      marginBottom: 18
     }
   });
 
@@ -181,6 +186,7 @@ class customer extends React.Component{
       const cellList = ["이름","생일","주소","전화번호","설정"]
       return(
         <div className={classes.root}>
+          <InputBase className={classes.searchBar}>검색</InputBase>
           <Paper className={classes.paper}>
               <Table className={classes.table}>
                 <TableHead>
