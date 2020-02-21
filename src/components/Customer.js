@@ -63,10 +63,10 @@ class customer extends React.Component{
       birth: '',
       adress: '',
       phone: '',
-      completed: 0
+      completed: 0,
+      searchKeyword: ''
     };
   }
-  
 
     //데이터 불러오기
     _get = async() => {
@@ -178,7 +178,11 @@ class customer extends React.Component{
     }
 
     //검색
-
+    searchValueChange(e) {
+      let nextState = {};
+      nextState[e.target.name] = e.target.value;
+      this.setState(nextState);
+    }
 
     //랜더(표시)
     render(){
