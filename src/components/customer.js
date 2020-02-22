@@ -1,3 +1,4 @@
+import 'date-fns';
 import React from 'react';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/tableCell';
@@ -18,8 +19,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import InputBase from '@material-ui/core/InputBase';
+/*import DateFnsUtils from '@date-io/date-fns';
+import { MulPickersUtilProvider } from '@material-ui/pickers';
 import SnackBar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
+import Alert from '@material-ui/lab/Alert';*/
 
 const databaseURL="https://customer-5b5d0.firebaseio.com"
 
@@ -52,6 +55,10 @@ const styles = theme => ({
       marginLeft: 18,
       marginBottom: 18
     },
+    button: {
+      marginLeft: 5,
+      marginRight: 5
+    }
   });
 
 class customer extends React.Component{
@@ -61,11 +68,15 @@ class customer extends React.Component{
       customers: {},
       dialogadd: false,
       dialogdel: false,
+      dialogedit: false,
+      dialogdetail: false,
       name: '',
       first: '',
       second: '',
-      adress: '',
+      birth: '',
       phone: '',
+      pay: '',
+      left: '',
       completed: 0,
       searchKeyword: ''
     };
@@ -86,8 +97,8 @@ class customer extends React.Component{
       return body;
     }
 
-    //데이터 자세히 보기
-    _getinfo = async(id) => {
+    //데이터 디테일
+    _getdetail = async(id) => {
       fetch(`${databaseURL}/customers/${id}.json`).then(res=>{
         if(res.status !== 200){
           throw new Error(res.statusText);
@@ -98,6 +109,31 @@ class customer extends React.Component{
       const responce = await fetch(`${databaseURL}/customers/${id}.json`)
       const body = await responce.json
       return body;
+    }
+
+    detailView = (id) => {
+      this.detailToggle();
+      this._getdetail(id);
+    }
+    
+    detailToggle = () => this.setState({dialogdetail: !this.state.dialogdetail});
+
+
+    //데이터 수정
+    _edit(id){
+      return fetch(`${databaseURL}/customers${id}.json`,{
+        method:'PUSH',
+        body: JSON.stringify(id)
+      }).then(res => {
+        if(res.status !== 200){
+          throw new Error(res.statusText);
+        }
+        return res.json();
+      }).then(() => {
+        let nextState = this.state.customers;
+        this.setState({customers: nextState});
+        this.componentDidMount();
+      });
     }
 
     //데이터 추가
@@ -114,6 +150,7 @@ class customer extends React.Component{
         let nextState = this.state.customers;
         this.setState({customers: nextState});
         this.componentDidMount();
+        alert("정보가 추가되었습니다.")
       });
     }
 
@@ -122,7 +159,7 @@ class customer extends React.Component{
         name: '',
         first: '',
         second: '',
-        adress: '',
+        birth: '',
         phone: '',
       })
     }
@@ -142,13 +179,14 @@ class customer extends React.Component{
         name: this.state.name,
         first: this.state.first,
         second: this.state.second,
-        adress: this.state.adress,
+        birth: this.state.birth,
         phone: this.state.phone
       }
       this.handleDialogToggle();
-      if (!customer.name && !customer.first && !customer.second && !customer.adress && !customer.phone){
+      if (!customer.name && !customer.first && !customer.second && !customer.birth && !customer.phone){
         return;
       }
+      
         this._post(customer);
     }
 
@@ -169,6 +207,7 @@ class customer extends React.Component{
         delete nextState[id];
         this.setState({customers: nextState});
         this.componentDidMount();
+        alert("정보가 삭제되었습니다.")
       });
     }
     
@@ -179,8 +218,6 @@ class customer extends React.Component{
 
 
     delToggle = () => this.setState({dialogdel: !this.state.dialogdel});
-
-    //알림
 
     //로딩 및 추가,삭제 시 데이터 새로고침
 
@@ -208,7 +245,7 @@ class customer extends React.Component{
     //랜더(표시)
     render(){
       const {classes} = this.props;
-      const cellList = ["이름","1차","2차","주소","전화번호","설정"]
+      const cellList = ["이름","1차","2차","예정일","전화번호","설정"]
       return(
         <div className={classes.root}>
           <InputBase name="searchKeyword" placeholder="검색" className={classes.searchBar} value={this.state.searchKeyword} onChange={this.handleValueChange}/>
@@ -229,9 +266,22 @@ class customer extends React.Component{
                             <TableCell>{customer.name}</TableCell>
                             <TableCell>{customer.first}</TableCell>
                             <TableCell>{customer.second}</TableCell>
-                            <TableCell>{customer.adress}</TableCell>
+                            <TableCell>{customer.birth}</TableCell>
                             <TableCell>{customer.phone}</TableCell>
-                            <TableCell><Button variant="contained" color="secondary" onClick={this.delToggle}>삭제</Button></TableCell>
+                            <TableCell><Button variant="contained" color="primary" onClick={this.detailToggle} className={classes.button}>자세히</Button><Button variant="contained" color="secondary" onClick={this.delToggle} className={classes.button}>삭제</Button></TableCell>
+                              <Dialog open={this.state.dialogdetail} onClose={this.detailToggle}>
+                                <DialogTitle>{customer.name}님의 정보</DialogTitle>
+                                <DialogContent>
+                                  <DialogContentText>이름: {customer.name}</DialogContentText>
+                                  <DialogContentText>1차: {customer.first}</DialogContentText>
+                                  <DialogContentText>2차: {customer.second}</DialogContentText>
+                                  <DialogContentText>예정일: {customer.birth}</DialogContentText>
+                                  <DialogContentText>연락처: {customer.phone}</DialogContentText>
+                                  <DialogActions>
+                                    <Button variant="outlined" color="primary" onClick={this.detailToggle}>닫기</Button>
+                                  </DialogActions>
+                                </DialogContent>
+                              </Dialog>
                               <Dialog open={this.state.dialogdel} onClose={this.delToggle}>
                                 <DialogTitle>경고</DialogTitle>
                                 <DialogContent>
@@ -263,7 +313,7 @@ class customer extends React.Component{
               <TextField label="이름" type="text" name="name" value={this.state.name} onChange={this.handleValueChange}/><br/>
               <TextField label="1차" type="text" name="first" value={this.state.first} onChange={this.handleValueChange}/><br/>
               <TextField label="2차" type="text" name="second" value={this.state.second} onChange={this.handleValueChange}/><br/>
-              <TextField label="주소" type="text" name="adress" value={this.state.adress} onChange={this.handleValueChange}/><br/>
+              <TextField label="예정일" type="text" name="birth" value={this.state.birth} onChange={this.handleValueChange}/><br/>
               <TextField label="번호" type="text" name="phone" value={this.state.phone} onChange={this.handleValueChange}/><br/>
             </DialogContent>
             <DialogActions>
@@ -275,5 +325,7 @@ class customer extends React.Component{
       )
     }
   }
+
+  //코스, 예치금(30만 고정), 잔액, 결제여부
   
 export default withStyles (styles) (customer)
