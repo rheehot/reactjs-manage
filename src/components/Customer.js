@@ -51,7 +51,7 @@ const styles = theme => ({
     searchBar: {
       marginLeft: 18,
       marginBottom: 18
-    }
+    },
   });
 
 class customer extends React.Component{
@@ -61,10 +61,9 @@ class customer extends React.Component{
       customers: {},
       dialogadd: false,
       dialogdel: false,
-      delAlert: false,
-      delSetAlert: false,
       name: '',
-      birth: '',
+      first: '',
+      second: '',
       adress: '',
       phone: '',
       completed: 0,
@@ -84,6 +83,20 @@ class customer extends React.Component{
       .catch(err => console.log(err));
       const responce = await fetch(`${databaseURL}/customers.json`);
       const body = await responce.json();
+      return body;
+    }
+
+    //데이터 자세히 보기
+    _getinfo = async(id) => {
+      fetch(`${databaseURL}/customers/${id}.json`).then(res=>{
+        if(res.status !== 200){
+          throw new Error(res.statusText);
+        }
+        return res.json();
+      }).then(customers => this.setState({customers:customers}))
+      .catch(err => console.log(err));
+      const responce = await fetch(`${databaseURL}/customers/${id}.json`)
+      const body = await responce.json
       return body;
     }
 
@@ -107,7 +120,8 @@ class customer extends React.Component{
     clear = () => { 
       this.setState({
         name: '',
-        birth: '',
+        first: '',
+        second: '',
         adress: '',
         phone: '',
       })
@@ -126,12 +140,13 @@ class customer extends React.Component{
     handleSumbit = () => {
       const customer = {
         name: this.state.name,
-        birth: this.state.birth,
+        first: this.state.first,
+        second: this.state.second,
         adress: this.state.adress,
         phone: this.state.phone
       }
       this.handleDialogToggle();
-      if (!customer.name && !customer.birth && !customer.adress && !customer.phone){
+      if (!customer.name && !customer.first && !customer.second && !customer.adress && !customer.phone){
         return;
       }
         this._post(customer);
@@ -163,7 +178,7 @@ class customer extends React.Component{
     }
 
 
-      delToggle = () => this.setState({dialogdel: !this.state.dialogdel});
+    delToggle = () => this.setState({dialogdel: !this.state.dialogdel});
 
     //알림
 
@@ -193,7 +208,7 @@ class customer extends React.Component{
     //랜더(표시)
     render(){
       const {classes} = this.props;
-      const cellList = ["이름","생일","주소","전화번호","설정"]
+      const cellList = ["이름","1차","2차","주소","전화번호","설정"]
       return(
         <div className={classes.root}>
           <InputBase name="searchKeyword" placeholder="검색" className={classes.searchBar} value={this.state.searchKeyword} onChange={this.handleValueChange}/>
@@ -212,7 +227,8 @@ class customer extends React.Component{
                   return(
                       <TableRow key={id}>
                             <TableCell>{customer.name}</TableCell>
-                            <TableCell>{customer.birth}</TableCell>
+                            <TableCell>{customer.first}</TableCell>
+                            <TableCell>{customer.second}</TableCell>
                             <TableCell>{customer.adress}</TableCell>
                             <TableCell>{customer.phone}</TableCell>
                             <TableCell><Button variant="contained" color="secondary" onClick={this.delToggle}>삭제</Button></TableCell>
@@ -245,7 +261,8 @@ class customer extends React.Component{
             <DialogContent>
               <DialogContentText>고객정보를 추가합니다.</DialogContentText>
               <TextField label="이름" type="text" name="name" value={this.state.name} onChange={this.handleValueChange}/><br/>
-              <TextField label="생일" type="text" name="birth" value={this.state.birth} onChange={this.handleValueChange}/><br/>
+              <TextField label="1차" type="text" name="first" value={this.state.first} onChange={this.handleValueChange}/><br/>
+              <TextField label="2차" type="text" name="second" value={this.state.second} onChange={this.handleValueChange}/><br/>
               <TextField label="주소" type="text" name="adress" value={this.state.adress} onChange={this.handleValueChange}/><br/>
               <TextField label="번호" type="text" name="phone" value={this.state.phone} onChange={this.handleValueChange}/><br/>
             </DialogContent>
