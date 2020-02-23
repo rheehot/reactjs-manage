@@ -30,12 +30,13 @@ const styles = theme => ({
     root: {
       width: '100%',
       marginTop: theme.spacing(3),
-      overflowX: "auto",
+      overflowX: 'auto',
       minWidth: 1080
     },
     paper:{
       marginLeft:18,
-      marginRight:18
+      marginRight:18,
+      marginTop:5
     },
     table:{
       minWidth: 1080
@@ -58,7 +59,7 @@ const styles = theme => ({
     button: {
       marginLeft: 5,
       marginRight: 5
-    }
+    },
   });
 
 class customer extends React.Component{
@@ -67,6 +68,7 @@ class customer extends React.Component{
     this.state={
       customers: {},
       delTargetId: '',
+      detailTargetId: '',
       dialogadd: false,
       dialogdel: false,
       dialogedit: false,
@@ -112,12 +114,17 @@ class customer extends React.Component{
       return body;
     }
 
-    detailView = (id) => {
+    detailView = (detailid) => {
       this.detailToggle();
-      this._getdetail(id);
+      this._getdetail(this.state.detailTargetId);
     }
     
-    detailToggle = () => this.setState({dialogdetail: !this.state.dialogdetail});
+    detailToggle = id => {
+      this.setState({
+        detailTargetId: id || this.state.detailTargetId,
+        dialogdetail: !this.state.dialogdetail
+      })
+    }
 
     //데이터 수정
     _edit(id){
@@ -251,54 +258,42 @@ class customer extends React.Component{
       const {classes} = this.props;
       const cellList = ["이름","1차","2차","예정일","전화번호","설정"]
       const delid = this.state.delTargetId;
+      const detailid = this.state.detailTargetId;
       return(
         <div className={classes.root}>
           <InputBase name="searchKeyword" placeholder="검색" className={classes.searchBar} value={this.state.searchKeyword} onChange={this.handleValueChange}/>
-          <Paper className={classes.paper} elevation={3}>
+          <div >
+            <Paper className={classes.paper} elevation={3}>
               <Table className={classes.table}>
                 <TableHead>
                   <TableRow>
-                    {cellList.map(c => {
-                      return <TableCell className={classes.tableHead} key={c}>{c}</TableCell>
-                    })}
+                    {cellList.map(c => {return <TableCell className={classes.tableHead} key={c}>{c}</TableCell>})}
                   </TableRow>
                 </TableHead> 
                 <TableBody>
-                {this.state.customers ? Object.keys(this.state.customers).map(id => {
-                  const customer = this.state.customers[id];
-                  return(
+                  {this.state.customers ? Object.keys(this.state.customers).map(id => {
+                    const customer = this.state.customers[id];
+                    return(
                       <TableRow key={id}>
-                            <TableCell>{customer.name}</TableCell>
-                            <TableCell>{customer.first}</TableCell>
-                            <TableCell>{customer.second}</TableCell>
-                            <TableCell>{customer.birth}</TableCell>
-                            <TableCell>{customer.phone}</TableCell>
-                            <TableCell><Button variant="contained" color="primary" onClick={this.detailToggle} className={classes.button}>자세히</Button><Button variant="contained" color="secondary" onClick={()=>{this.delToggle(id)}} className={classes.button}>삭제</Button></TableCell>
-                              <Dialog open={this.state.dialogdetail} onClose={this.detailToggle}>
-                                <DialogTitle>{customer.name}님의 정보</DialogTitle>
-                                <DialogContent>
-                                    <DialogContentText>이름: {customer.name}</DialogContentText>
-                                    <DialogContentText>1차: {customer.first}</DialogContentText>
-                                    <DialogContentText>2차: {customer.second}</DialogContentText>
-                                    <DialogContentText>예정일: {customer.birth}</DialogContentText>
-                                    <DialogContentText>연락처: {customer.phone}</DialogContentText>
-                                  <DialogActions>
-                                    <Button variant="contained" color="primary">수정</Button>
-                                    <Button variant="outlined" color="primary" onClick={this.detailToggle}>닫기</Button>
-                                  </DialogActions>
-                                </DialogContent>
-                              </Dialog>
+                        <TableCell>{customer.name}</TableCell>
+                        <TableCell>{customer.first}</TableCell>
+                        <TableCell>{customer.second}</TableCell>
+                        <TableCell>{customer.birth}</TableCell>
+                        <TableCell>{customer.phone}</TableCell>
+                        <TableCell><Button variant="contained" color="primary" onClick={() => {this.detailToggle(id)}} className={classes.button}>자세히</Button>
+                        <Button variant="contained" color="secondary" onClick={()=>{this.delToggle(id)}} className={classes.button}>삭제</Button></TableCell>
                       </TableRow>
-                  )
-                }) : 
-                <TableRow>
-                      <TableCell colSpan="6" align="center">
-                        <CircularProgress className={classes.progress} value={this.state.completed}/>
-                      </TableCell>
-                    </TableRow>}
-                </TableBody>
-              </Table>
-          </Paper>
+                    )
+                  }) : 
+                  <TableRow>
+                    <TableCell colSpan="6" align="center">
+                      <CircularProgress className={classes.progress} value={this.state.completed}/>
+                    </TableCell>
+                  </TableRow>}
+                  </TableBody>
+                </Table>
+            </Paper>
+            </div>
           <Fab color="primary" className={classes.fab} onClick={this.handleDialogToggle}>
             <AddIcon/>
           </Fab>
@@ -317,7 +312,7 @@ class customer extends React.Component{
               <Button variant="outlined" color="primary" onClick={this.handleDialogToggle}>닫기</Button>
             </DialogActions>
           </Dialog>
-          <Dialog open={this.state.dialogdel} onClose={() => {this.delToggle(delid)}}>
+          <Dialog open={this.state.dialogdel} onClose={() => {this.delToggle(delid)}} key={delid}>
             <DialogTitle>경고</DialogTitle>
               <DialogContent>
                  <DialogContentText>고객정보를 삭제하시겠습니까?</DialogContentText>
@@ -327,7 +322,22 @@ class customer extends React.Component{
                 </DialogActions>
               </DialogContent>
           </Dialog>
+          <Dialog open={this.state.dialogdetail} onClose={() => this.detailToggle(detailid)}>
+              <DialogTitle>{}님의 정보</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>이름: {}</DialogContentText>
+                    <DialogContentText>1차: {}</DialogContentText>
+                    <DialogContentText>2차: {}</DialogContentText>
+                    <DialogContentText>예정일: {}</DialogContentText>
+                    <DialogContentText>연락처: {}</DialogContentText>
+                  <DialogActions>
+                    <Button variant="contained" color="primary">수정</Button>
+                    <Button variant="outlined" color="primary" onClick={this.detailToggle}>닫기</Button>
+                  </DialogActions>
+              </DialogContent>
+            </Dialog>
         </div>
+      
       )
     }
   }
