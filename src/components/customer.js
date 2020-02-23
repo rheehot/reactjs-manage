@@ -194,7 +194,7 @@ class customer extends React.Component{
         return;
       }
       
-        this._post(customer);
+      this._post(customer);
     }
 
     //데이터 삭제
