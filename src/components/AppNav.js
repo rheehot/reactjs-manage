@@ -42,8 +42,19 @@ class AppNav extends React.Component{
                         </Link>
                     </MenuItem>
                     <MenuItem onClick={this.handleDrawerToggle}>
+                        <Link component = {RouterLink} to="/calendar">
+                            예약관리
+                        </Link>
+                    </MenuItem>
+                    
+                    <MenuItem onClick={this.handleDrawerToggle}>
                         <Link component = {RouterLink} to="/customer">
-                            고객정보
+                            고객관리
+                        </Link>
+                    </MenuItem>
+                    <MenuItem onClick={this.handleDrawerToggle}>
+                        <Link component = {RouterLink} to="/product">
+                            제품관리
                         </Link>
                     </MenuItem>
                 </Drawer>
