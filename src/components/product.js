@@ -2,6 +2,7 @@ import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
+import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -15,6 +16,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import SnackBar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
+import InputBase from '@material-ui/core/InputBase';
 import { withStyles } from '@material-ui/core/styles'
 
 const databaseURL="https://customer-5b5d0.firebaseio.com"
@@ -40,8 +42,16 @@ const styles = theme => ({
       },
     button: {
         marginLeft: 5,
-        marginRight: 5
-      }
+        marginRight: 5,
+        marginTop: 5,
+        marginBottom: 5
+      },
+    paper: {
+      marginLeft: '10px',
+      marginRight: '10px',
+      marginTop: '10px',
+      marginBottom: '10px'
+    }
 });
 
 class product extends React.Component{
@@ -162,26 +172,34 @@ class product extends React.Component{
         const {classes} = this.props
         return(
             <div className={classes.root}>
+              <Paper className={classes.paper}>
+                <InputBase></InputBase>
+                <Button className={classes.button} variant="outlined" color="primary">분류1</Button>
+                <Button className={classes.button} variant="outlined" color="primary">분류2</Button>
+                <Button className={classes.button} variant="outlined" color="primary">분류3</Button>
+                <Button className={classes.button} variant="outlined" color="primary">분류4</Button>
+                <Button className={classes.button} variant="outlined" color="primary">분류5</Button>
+              </Paper>
                 <Grid container spacing={1} justify="center">
-                {this.state.products ? Object.keys(this.state.products).map(id => {
-                    const product = this.state.products[id];
-                    return(
-                        <div key={id}>
-                          <Card className={classes.card}>
-                            <CardContent>
-                              <Typography variant="h5" component="h2">{product.name}</Typography>
-                              <Typography className={classes.pos} color="textSecondary">{product.tag}</Typography>
-                              <Typography variant="body2" component="p">제품구입: {product.productbuy}</Typography>
-                              <Typography variant="body2" component="p">제품판매: {product.productsell}</Typography>
-                              <Typography variant="body2" component="p">제품재고: {product.productcurrent}</Typography>
-                            </CardContent>
-                            <CardActions>
-                              <Button size="small">자세히</Button>
-                            </CardActions>
-                          </Card>
-                        </div>
-                    )
-                }) : <Typography align="center">제품이 없거나 서버로부터 응답이 없습니다.<br/>제품을 추가하시려면 아래 +버튼을 클릭하여 제품을 추가하십시오.</Typography>}
+                    {this.state.products ? Object.keys(this.state.products).map(id => {
+                        const product = this.state.products[id];
+                        return(
+                            <div key={id}>
+                              <Card className={classes.card}>
+                                <CardContent>
+                                  <Typography variant="h5" component="h2">{product.name}</Typography>
+                                  <Typography className={classes.pos} color="textSecondary">{product.tag}</Typography>
+                                  <Typography variant="body2" component="p">제품구입: {product.productbuy}</Typography>
+                                  <Typography variant="body2" component="p">제품판매: {product.productsell}</Typography>
+                                  <Typography variant="body2" component="p">제품재고: {product.productcurrent}</Typography>
+                                </CardContent>
+                                <CardActions>
+                                  <Button size="small">자세히</Button>
+                                </CardActions>
+                              </Card>
+                            </div>
+                        )
+                    }) : <Typography align="center">제품이 없거나 서버로부터 응답이 없습니다.<br/>제품을 추가하시려면 아래 +버튼을 클릭하여 제품을 추가하십시오.</Typography>}
                 </Grid>
                 <Fab color="primary" className={classes.fab} onClick={this.handleDialogToggle}>
                     <AddIcon/>
