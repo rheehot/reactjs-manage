@@ -7,7 +7,7 @@ import TableBody from '@material-ui/core/TableBody';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
-//import Grid from '@material-ui/core/Grid';
+import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
@@ -21,6 +21,10 @@ import InputBase from '@material-ui/core/InputBase';
 import SnackBar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import Typography from '@material-ui/core/Typography';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 /*import DateFnsUtils from '@date-io/date-fns';
 import { MulPickersUtilProvider } from '@material-ui/pickers';*/
 
@@ -42,9 +46,6 @@ const styles = theme => ({
     table:{
       minWidth: 1080
     },
-    progress:{
-      margin: theme.spacing(2)
-    },
     fab:{
       position: 'fixed',
       bottom: '20px',
@@ -63,6 +64,11 @@ const styles = theme => ({
       marginLeft: 5,
       marginRight: 5
     },
+    formControl: {
+      minWidth: 180
+    },
+    selectEmpty:{
+    }
   });
 
 class customer extends React.Component{
@@ -79,6 +85,10 @@ class customer extends React.Component{
       addalert: false,
       delalert: false,
       name: '',
+      course:'',
+      coursebal:'',
+      firstpay:'',
+      amount:'',
       first: '',
       second: '',
       birth: '',
@@ -169,6 +179,7 @@ class customer extends React.Component{
     clear = () => { 
       this.setState({
         name: '',
+        course:'',
         first: '',
         second: '',
         birth: '',
@@ -189,13 +200,14 @@ class customer extends React.Component{
     handleSumbit = () => {
       const customer = {
         name: this.state.name,
+        course: this.state.course,
         first: this.state.first,
         second: this.state.second,
         birth: this.state.birth,
         phone: this.state.phone
       }
       this.handleDialogToggle();
-      if (!customer.name && !customer.first && !customer.second && !customer.birth && !customer.phone){
+      if (!customer.name && !customer.course && !customer.first && !customer.second && !customer.birth && !customer.phone){
         return;
       }
       
@@ -264,7 +276,7 @@ class customer extends React.Component{
     //랜더(표시)
     render(){
       const {classes} = this.props;
-      const cellList = ["이름","1차","2차","예정일","전화번호","설정"]
+      const cellList = ["이름","전화번호","코스","1차","2차","예정일","설정"]
       const delid = this.state.delTargetId;
       const detailid = this.state.detailTargetId;
       return(
@@ -286,18 +298,19 @@ class customer extends React.Component{
                     return(
                       <TableRow key={id}>
                         <TableCell align="center">{customer.name}</TableCell>
+                        <TableCell align="center">{customer.phone}</TableCell>
+                        <TableCell align="center">{customer.course}</TableCell>
                         <TableCell align="center">{customer.first}</TableCell>
                         <TableCell align="center">{customer.second}</TableCell>
                         <TableCell align="center">{customer.birth}</TableCell>
-                        <TableCell align="center">{customer.phone}</TableCell>
                         <TableCell align="center"><Button variant="contained" color="primary" onClick={() => {this.detailToggle(id)}} className={classes.button}>자세히</Button>
                         <Button variant="contained" color="secondary" onClick={()=>{this.delToggle(id)}} className={classes.button}>삭제</Button></TableCell>
                       </TableRow>
                     )
                   }) : 
                   <TableRow>
-                    <TableCell colSpan="6" align="center">
-                      <Typography align="center">고객정보가 없거나 서버로부터 응답이 없습니다.<br/>고객정보를 추가하시려면 아래 +버튼을 클릭하여 고객정보를 추가하십시오.</Typography>
+                    <TableCell colSpan="7" align="center">
+                      <Typography align="center">고객정보가 존재하지 않거나 서버로부터 응답이 없습니다.<br/>고객정보를 추가하시려면 아래 <AddIcon style={{fontSize:13}}/> 버튼을 클릭하여 고객정보를 추가하십시오.</Typography>
                     </TableCell>
                   </TableRow>}
                   </TableBody>
@@ -311,11 +324,45 @@ class customer extends React.Component{
             <DialogTitle>고객 추가</DialogTitle>
             <DialogContent>
               <DialogContentText>고객정보를 추가합니다.</DialogContentText>
-              <TextField label="이름" type="text" name="name" value={this.state.name} onChange={this.handleValueChange}/><br/>
-              <TextField label="1차" type="text" name="first" value={this.state.first} onChange={this.handleValueChange}/><br/>
-              <TextField label="2차" type="text" name="second" value={this.state.second} onChange={this.handleValueChange}/><br/>
-              <TextField label="예정일" type="text" name="birth" value={this.state.birth} onChange={this.handleValueChange}/><br/>
-              <TextField label="번호" type="text" name="phone" value={this.state.phone} onChange={this.handleValueChange}/><br/>
+              <Grid container spacing={1}>
+                <Grid item xs={4}>
+                  <TextField label="이름" type="text" name="name" value={this.state.name} onChange={this.handleValueChange}/>
+                    </Grid>
+                <Grid item xs={4}>
+                  <TextField label="전화번호" type="text" name="phone" value={this.state.phone} onChange={this.handleValueChange}/>
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField label="예정일" type="text" name="birth" value={this.state.birth} onChange={this.handleValueChange}/>
+                </Grid>
+                <Grid item xs={4}>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel>코스</InputLabel>
+                      <Select id="course-select-label" value={this.state.course} onChange={this.handleValueChange}>
+                        <MenuItem labelid="course-select-label" id="course-select" disabled>
+                          코스
+                        </MenuItem>
+                        <MenuItem value="미정">미정</MenuItem>
+                        <MenuItem value="로얄">로얄</MenuItem>
+                        <MenuItem value="럭셔리">럭셔리</MenuItem>
+                        <MenuItem value="스페셜">스페셜</MenuItem>
+                        <MenuItem value="베이직">베이직</MenuItem>
+                        <MenuItem value="스텐다드">스텐다드</MenuItem>
+                      </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField label="예치금" type="text" name="firstpay" value={this.state.firstpay} onChange={this.handleValueChange}/>
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField label="잔액" type="number" name="amount" value={this.state.amount} onChange={this.handleValueChange}/>
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField label="1차" type="text" name="first" value={this.state.first} onChange={this.handleValueChange}/>
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField label="2차" type="text" name="second" value={this.state.second} onChange={this.handleValueChange}/>
+                </Grid>
+              </Grid> 
             </DialogContent>
             <DialogActions>
               <Button variant="contained" color="primary" onClick={() => {this.handleSumbit(); this.clear()}}>추가</Button>
@@ -362,6 +409,24 @@ class customer extends React.Component{
     }
   }
 
-  //코스, 예치금(30만 고정), 잔액, 결제여부
+  //코스, 예치금(30만 고정), 잔액 결제여부
+  /*
+  로얄 300 -> 255
+  럭셔리 270 -> 229.5
+  스페셜 200 -> 170
+  베이직 160 -> 136
+  스텐다드 120 -> 102
+  
+  예치금 30
+
+  예치금 지불 여부 = (참: 코스-예치금=잔액, 거짓:코스=잔액)
+
+  잔액 결제여부 = 카드,현금,이체,상품권,모바일상품권
+
+  현금,상품권 : 현금영수증
+  카드 : 카드번호,승인번호
+  */
+
+  //label="코스" type="text" name="course" <TextField label="코스" type="text" name="course" value={this.state.course} onChange={this.handleValueChange}/>
   
 export default withStyles (styles) (customer)

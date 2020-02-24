@@ -15,17 +15,16 @@ const styles = theme => ({
         minWidth: 1080
     },
     Typography:{
-        marginLeft: '15px',
         marginRight: '15px',
         marginTop: '15px',
         marginBottom: '15px',
     },
     Card:{
         width: '250px',
-        marginLeft: '10px',
-        marginRight: '10px',
-        marginTop: '10px',
-        marginBottom: '10px',
+        marginLeft: '20px',
+        marginRight: '20px',
+        marginTop: '20px',
+        marginBottom: '20px',
     }
 })
 class Home extends React.Component{
@@ -39,7 +38,31 @@ class Home extends React.Component{
                 <Grid container spacing={0} justify="center">
                     <Card className={classes.Card}>
                         <CardContent>
-                            <Typography variant="h5" component="h2">고객관리</Typography>
+                            <Typography variant="h5" component="h2">항목1</Typography>
+                            <Typography className={classes.pos} color="textSecondary">고객관리</Typography>
+                            <Typography variant="body2" component="p">제품구입: 10</Typography>
+                            <Typography variant="body2" component="p">제품판매: 10</Typography>
+                            <Typography variant="body2" component="p">제품재고: 10</Typography>
+                        </CardContent>
+                        <CardActions>
+                            <Button size="small">자세히</Button>
+                        </CardActions>
+                    </Card>
+                    <Card className={classes.Card}>
+                        <CardContent>
+                            <Typography variant="h5" component="h2">항목2</Typography>
+                            <Typography className={classes.pos} color="textSecondary">고객관리</Typography>
+                            <Typography variant="body2" component="p">제품구입: 10</Typography>
+                            <Typography variant="body2" component="p">제품판매: 10</Typography>
+                            <Typography variant="body2" component="p">제품재고: 10</Typography>
+                        </CardContent>
+                        <CardActions>
+                            <Button size="small">자세히</Button>
+                        </CardActions>
+                    </Card>
+                    <Card className={classes.Card}>
+                        <CardContent>
+                            <Typography variant="h5" component="h2">항목3</Typography>
                             <Typography className={classes.pos} color="textSecondary">고객관리</Typography>
                             <Typography variant="body2" component="p">제품구입: 10</Typography>
                             <Typography variant="body2" component="p">제품판매: 10</Typography>

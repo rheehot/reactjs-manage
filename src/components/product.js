@@ -26,14 +26,15 @@ const styles = theme => ({
         flexGrow:1,
         width: '100%',
         marginTop: theme.spacing(3),
-        minWidth: 1080
+        minWidth: 1080,
+        overflowX: 'auto'
     },
     card:{
         width: '250px',
         marginLeft: 18,
-        marginRight: 18,
-        marginTop: 18,
-        marginBottom: 18,
+        marginRight: 4,
+        marginTop: 10,
+        marginBottom: 10,
     },
     fab:{
         position: 'fixed',
@@ -186,7 +187,7 @@ class product extends React.Component{
                 <Button className={classes.button} variant="outlined" color="primary">분류4</Button>
                 <Button className={classes.button} variant="outlined" color="primary">분류5</Button>
               </Paper>
-                <Grid container spacing={0} justify="left">
+                <Grid container spacing={0} justify="flex-start">
                     {this.state.products ? Object.keys(this.state.products).map(id => {
                         const product = this.state.products[id];
                         return(
@@ -205,7 +206,7 @@ class product extends React.Component{
                               </Card>
                             </div>
                         )
-                    }) : <Typography align="center">제품이 없거나 서버로부터 응답이 없습니다.<br/>제품을 추가하시려면 아래 +버튼을 클릭하여 제품을 추가하십시오.</Typography>}
+                    }) : <Typography align="center">제품이 없거나 서버로부터 응답이 없습니다.<br/>제품을 추가하시려면 아래 <AddIcon style={{fontSize:13}}/>버튼을 클릭하여 제품을 추가하십시오.</Typography>}
                 </Grid>
                 <Fab color="primary" className={classes.fab} onClick={this.handleDialogToggle}>
                     <AddIcon/>
