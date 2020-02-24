@@ -13,6 +13,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import SnackBar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 import { withStyles } from '@material-ui/core/styles'
 
 const databaseURL="https://customer-5b5d0.firebaseio.com"
@@ -21,6 +23,8 @@ const styles = theme => ({
     root: {
         flexGrow:1,
         width: '100%',
+        marginTop: theme.spacing(3),
+        minWidth: 1080
     },
     card:{
         width: '250px',
@@ -37,7 +41,7 @@ const styles = theme => ({
     button: {
         marginLeft: 5,
         marginRight: 5
-      },
+      }
 });
 
 class product extends React.Component{
@@ -46,6 +50,7 @@ class product extends React.Component{
         this.state={
             products:{},
             dialogadd: false,
+            addalert: false,
             name: '',
             tag: '',
             productbuy: '',
@@ -82,7 +87,7 @@ class product extends React.Component{
           let nextState = this.state.products;
           this.setState({products: nextState});
           this.componentDidMount();
-          alert("정보가 추가되었습니다.")
+          this.addAlertOpen();
         });
       }
 
@@ -121,6 +126,16 @@ class product extends React.Component{
         this._post(product);
       }
 
+      addAlertOpen = () => this.setState({
+        addalert: true
+      })
+
+      addAlertClose = () => this.setState({
+        addalert: false
+      })
+
+
+
       //데이터 삭제
       _delete(id){
         return fetch(`${databaseURL}/products/${id}.json`,{
@@ -135,7 +150,6 @@ class product extends React.Component{
           delete nextState[id];
           this.setState({products: nextState});
           this.componentDidMount();
-          alert("정보가 삭제되었습니다.")
         });
       }
 
@@ -144,35 +158,31 @@ class product extends React.Component{
         this._get()
       }
 
-      shouldComponentUpdate(nextProps, nextState) {
-        return nextState.products !== this.state.products
-        }
-
       //렌더(표시)
     render(){
         const {classes} = this.props
         return(
             <div className={classes.root}>
                 <Grid container spacing={1} justify="center">
-                {Object.keys(this.state.products).map(id => {
+                {this.state.products ? Object.keys(this.state.products).map(id => {
                     const product = this.state.products[id];
                     return(
                         <div key={id}>
-                                <Card className={classes.card}>
-                                    <CardContent>
-                                        <Typography variant="h5" component="h2">{product.name}</Typography>
-                                        <Typography className={classes.pos} color="textSecondary">{product.tag}</Typography>
-                                        <Typography variant="body2" component="p">제품구입: {product.productbuy}</Typography>
-                                        <Typography variant="body2" component="p">제품판매: {product.productsell}</Typography>
-                                        <Typography variant="body2" component="p">제품재고: {product.productcurrent}</Typography>
-                                    </CardContent>
-                                    <CardActions>
-                                        <Button size="small">자세히</Button>
-                                    </CardActions>
-                                </Card>
+                          <Card className={classes.card}>
+                            <CardContent>
+                              <Typography variant="h5" component="h2">{product.name}</Typography>
+                              <Typography className={classes.pos} color="textSecondary">{product.tag}</Typography>
+                              <Typography variant="body2" component="p">제품구입: {product.productbuy}</Typography>
+                              <Typography variant="body2" component="p">제품판매: {product.productsell}</Typography>
+                              <Typography variant="body2" component="p">제품재고: {product.productcurrent}</Typography>
+                            </CardContent>
+                            <CardActions>
+                              <Button size="small">자세히</Button>
+                            </CardActions>
+                          </Card>
                         </div>
                     )
-                })}
+                }) : <Typography>제품이 없습니다. 제품을 추가하시려면 아래 +버튼을 클릭하여 제품을 추가하십시오.</Typography>}
                 </Grid>
                 <Fab color="primary" className={classes.fab} onClick={this.handleDialogToggle}>
                     <AddIcon/>
@@ -187,11 +197,16 @@ class product extends React.Component{
                             <TextField label="판매" type="text" name="productsell" value={this.state.productsell} onChange={this.handleValueChange}/><br/>
                             <TextField label="재고" type="text" name="productcurrent" value={this.state.productcurrent} onChange={this.handleValueChange}/><br/>
                         </DialogContent>
-                        <DialogActions>
-                            <Button variant="contained" color="primary" onClick={() => {this.handleSumbit(); this.clear()}}>추가</Button>
-                            <Button variant="outlined" color="primary" onClick={this.handleDialogToggle}>닫기</Button>
-                        </DialogActions>
+                    <DialogActions>
+                        <Button variant="contained" color="primary" onClick={() => {this.handleSumbit(); this.clear();}}>추가</Button>
+                        <Button variant="outlined" color="primary" onClick={this.handleDialogToggle}>닫기</Button>
+                    </DialogActions>
                 </Dialog>
+                <SnackBar open={this.state.addalert} autoHideDuration={3000} onClose={this.addAlertClose}>
+                  <Alert onClose={this.addAlertClose} severity="success">
+                    제품이 추가되었습니다.
+                  </Alert>
+                </SnackBar>
             </div>
         )
     }

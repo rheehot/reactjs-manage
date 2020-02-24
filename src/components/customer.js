@@ -199,8 +199,6 @@ class customer extends React.Component{
 
     //데이터 삭제
 
-      //<Button variant="outlined" color="primary" onClick={() => this.handleDelete(id)}>삭제</Button>
-
     _delete(id){
       return fetch(`${databaseURL}/customers/${id}.json`,{
         method:'DELETE'
