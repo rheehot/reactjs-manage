@@ -51,6 +51,7 @@ class product extends React.Component{
             products:{},
             dialogadd: false,
             addalert: false,
+            delalert: false,
             name: '',
             tag: '',
             productbuy: '',
@@ -134,8 +135,6 @@ class product extends React.Component{
         addalert: false
       })
 
-
-
       //데이터 삭제
       _delete(id){
         return fetch(`${databaseURL}/products/${id}.json`,{
@@ -182,7 +181,7 @@ class product extends React.Component{
                           </Card>
                         </div>
                     )
-                }) : <Typography>제품이 없습니다. 제품을 추가하시려면 아래 +버튼을 클릭하여 제품을 추가하십시오.</Typography>}
+                }) : <Typography align="center">제품이 없거나 서버로부터 응답이 없습니다.<br/>제품을 추가하시려면 아래 +버튼을 클릭하여 제품을 추가하십시오.</Typography>}
                 </Grid>
                 <Fab color="primary" className={classes.fab} onClick={this.handleDialogToggle}>
                     <AddIcon/>

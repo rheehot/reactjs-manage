@@ -5,7 +5,6 @@ import TableCell from '@material-ui/core/tableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import Paper from '@material-ui/core/Paper';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 //import Grid from '@material-ui/core/Grid';
@@ -19,10 +18,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import InputBase from '@material-ui/core/InputBase';
-/*import DateFnsUtils from '@date-io/date-fns';
-import { MulPickersUtilProvider } from '@material-ui/pickers';
 import SnackBar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';*/
+import Alert from '@material-ui/lab/Alert';
+import Typography from '@material-ui/core/Typography';
+/*import DateFnsUtils from '@date-io/date-fns';
+import { MulPickersUtilProvider } from '@material-ui/pickers';*/
 
 const databaseURL="https://customer-5b5d0.firebaseio.com"
 
@@ -73,6 +73,8 @@ class customer extends React.Component{
       dialogdel: false,
       dialogedit: false,
       dialogdetail: false,
+      addalert: false,
+      delalert: false,
       name: '',
       first: '',
       second: '',
@@ -157,7 +159,7 @@ class customer extends React.Component{
         let nextState = this.state.customers;
         this.setState({customers: nextState});
         this.componentDidMount();
-        alert("정보가 추가되었습니다.")
+        this.addAlertOpen(); 
       });
     }
 
@@ -197,6 +199,13 @@ class customer extends React.Component{
       this._post(customer);
     }
 
+    addAlertOpen = () => this.setState({
+      addalert: true
+    })
+
+    addAlertClose = () => this.setState({
+      addalert: false
+    })
     //데이터 삭제
 
     _delete(id){
@@ -212,7 +221,7 @@ class customer extends React.Component{
         delete nextState[id];
         this.setState({customers: nextState});
         this.componentDidMount();
-        alert("정보가 삭제되었습니다.")
+        this.delAlertOpen();
       });
     }
     
@@ -228,20 +237,18 @@ class customer extends React.Component{
       })
     }
 
-    //로딩 및 추가,삭제 시 데이터 새로고침
+    delAlertOpen = () => this.setState({
+      delalert: true
+    })
 
-    progress = () => {
-      const {completed} = this.state;
-      this.setState({completed: completed >= 100? 0 : completed + 1})
-    }
+    delAlertClose = () => this.setState({
+      delalert: false
+    })
+
+    //데이터 새로고침
 
     componentDidMount(){
-      this.timer = setInterval*(this.progress, 20);
       this._get()
-    }
-
-    UNSAFE_componentWillMount(){
-      clearInterval(this.timer);
     }
 
     //검색
@@ -265,7 +272,7 @@ class customer extends React.Component{
               <Table className={classes.table}>
                 <TableHead>
                   <TableRow>
-                    {cellList.map(c => {return <TableCell className={classes.tableHead} key={c}>{c}</TableCell>})}
+                    {cellList.map(c => {return <TableCell align="center" className={classes.tableHead} key={c}>{c}</TableCell>})}
                   </TableRow>
                 </TableHead> 
                 <TableBody>
@@ -273,19 +280,19 @@ class customer extends React.Component{
                     const customer = this.state.customers[id];
                     return(
                       <TableRow key={id}>
-                        <TableCell>{customer.name}</TableCell>
-                        <TableCell>{customer.first}</TableCell>
-                        <TableCell>{customer.second}</TableCell>
-                        <TableCell>{customer.birth}</TableCell>
-                        <TableCell>{customer.phone}</TableCell>
-                        <TableCell><Button variant="contained" color="primary" onClick={() => {this.detailToggle(id)}} className={classes.button}>자세히</Button>
+                        <TableCell align="center">{customer.name}</TableCell>
+                        <TableCell align="center">{customer.first}</TableCell>
+                        <TableCell align="center">{customer.second}</TableCell>
+                        <TableCell align="center">{customer.birth}</TableCell>
+                        <TableCell align="center">{customer.phone}</TableCell>
+                        <TableCell align="center"><Button variant="contained" color="primary" onClick={() => {this.detailToggle(id)}} className={classes.button}>자세히</Button>
                         <Button variant="contained" color="secondary" onClick={()=>{this.delToggle(id)}} className={classes.button}>삭제</Button></TableCell>
                       </TableRow>
                     )
                   }) : 
                   <TableRow>
                     <TableCell colSpan="6" align="center">
-                      <CircularProgress className={classes.progress} value={this.state.completed}/>
+                      <Typography align="center">고객정보가 없거나 서버로부터 응답이 없습니다.<br/>고객정보를 추가하시려면 아래 +버튼을 클릭하여 고객정보를 추가하십시오.</Typography>
                     </TableCell>
                   </TableRow>}
                   </TableBody>
@@ -334,6 +341,16 @@ class customer extends React.Component{
                   </DialogActions>
               </DialogContent>
             </Dialog>
+            <SnackBar open={this.state.addalert} autoHideDuration={3000} onClose={this.addAlertClose}>
+                  <Alert onClose={this.addAlertClose} severity="success">
+                    고객정보가 추가되었습니다.
+                  </Alert>
+            </SnackBar>
+            <SnackBar open={this.state.delalert} autoHideDuration={3000} onClose={this.delAlertClose}>
+                  <Alert onClose={this.delAlertClose} severity="success">
+                    고객정보가 삭제되었습니다.
+                  </Alert>
+            </SnackBar>
         </div>
       
       )
