@@ -51,6 +51,12 @@ const styles = theme => ({
       marginRight: '10px',
       marginTop: '10px',
       marginBottom: '10px'
+    },
+    searchbar: {
+      marginLeft: '10px',
+      marginRight: '10px',
+      marginTop: '10px',
+      marginBottom: '10px'
     }
 });
 
@@ -173,7 +179,7 @@ class product extends React.Component{
         return(
             <div className={classes.root}>
               <Paper className={classes.paper}>
-                <InputBase></InputBase>
+                <InputBase className={classes.searchbar} placeholder="검색"></InputBase>
                 <Button className={classes.button} variant="outlined" color="primary">분류1</Button>
                 <Button className={classes.button} variant="outlined" color="primary">분류2</Button>
                 <Button className={classes.button} variant="outlined" color="primary">분류3</Button>
