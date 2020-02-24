@@ -46,12 +46,12 @@ const styles = theme => ({
         marginTop: 5,
         marginBottom: 5
       },
-    paper: {
-      marginLeft: '10px',
-      marginRight: '10px',
-      marginTop: '10px',
-      marginBottom: '10px'
-    },
+    paper:{
+        marginLeft:18,
+        marginRight:18,
+        marginTop:10,
+        marginBottom:10
+      },
     searchbar: {
       marginLeft: '10px',
       marginRight: '10px',

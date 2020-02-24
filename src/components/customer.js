@@ -36,7 +36,8 @@ const styles = theme => ({
     paper:{
       marginLeft:18,
       marginRight:18,
-      marginTop:5
+      marginTop:10,
+      marginBottom:10
     },
     table:{
       minWidth: 1080
@@ -53,8 +54,10 @@ const styles = theme => ({
       fontSize: '1.0rem'
     },
     searchBar: {
-      marginLeft: 18,
-      marginBottom: 18
+      marginLeft: '15px',
+      marginRight: '15px',
+      marginTop: '15px',
+      marginBottom: '15px'
     },
     button: {
       marginLeft: 5,
@@ -266,7 +269,9 @@ class customer extends React.Component{
       const detailid = this.state.detailTargetId;
       return(
         <div className={classes.root}>
-          <InputBase name="searchKeyword" placeholder="검색" className={classes.searchBar} value={this.state.searchKeyword} onChange={this.handleValueChange}/>
+          <Paper className={classes.paper}>
+            <InputBase name="searchKeyword" placeholder="검색" className={classes.searchBar} value={this.state.searchKeyword} onChange={this.handleValueChange}/>
+          </Paper>
           <div >
             <Paper className={classes.paper} elevation={3}>
               <Table className={classes.table}>

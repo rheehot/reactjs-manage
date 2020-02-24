@@ -6,7 +6,7 @@ import 'tui-time-picker/dist/tui-time-picker.css';
 class calendar extends React.Component{
     render(){
         return(
-            <div></div>
+            <div>날짜 들어갈곳</div>
         )
     }
 }
