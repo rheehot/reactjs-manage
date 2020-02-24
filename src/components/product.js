@@ -30,10 +30,10 @@ const styles = theme => ({
     },
     card:{
         width: '250px',
-        marginLeft: '10px',
-        marginRight: '10px',
-        marginTop: '10px',
-        marginBottom: '10px',
+        marginLeft: 18,
+        marginRight: 18,
+        marginTop: 18,
+        marginBottom: 18,
     },
     fab:{
         position: 'fixed',
@@ -186,7 +186,7 @@ class product extends React.Component{
                 <Button className={classes.button} variant="outlined" color="primary">분류4</Button>
                 <Button className={classes.button} variant="outlined" color="primary">분류5</Button>
               </Paper>
-                <Grid container spacing={1} justify="center">
+                <Grid container spacing={0} justify="left">
                     {this.state.products ? Object.keys(this.state.products).map(id => {
                         const product = this.state.products[id];
                         return(
