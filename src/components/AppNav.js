@@ -4,9 +4,17 @@ import Link from '@material-ui/core/Link';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Drawer from '@material-ui/core/Drawer';
-import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import Divider from '@material-ui/core/Divider';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
+import DateRangeIcon from '@material-ui/icons/DateRange';
+import PermContactCalendarSharpIcon from '@material-ui/icons/PermContactCalendarSharp';
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import HomeIcon from '@material-ui/icons/Home';
+
+const drawerWidth = 180;
 
 const styles ={
     root:{
@@ -15,6 +23,19 @@ const styles ={
     menuButton: {
         marginRight:'auto'
     },
+    drawer:{
+        width: drawerWidth,
+        flexShrihk:0,
+    },
+    drawerPaper: {
+        width: drawerWidth,
+    },
+    typo:{
+        marginLeft: 15
+    },
+    icon:{
+        marginRight: 15,
+    }
 };
 
 class AppNav extends React.Component{
@@ -35,28 +56,28 @@ class AppNav extends React.Component{
                         <MenuIcon/>
                     </IconButton>
                 </AppBar>
-                <Drawer open={this.state.toggle}>
-                    <MenuItem onClick={this.handleDrawerToggle}>
+                <Drawer open={this.state.toggle} className={classes.drawer} classes={{paper: classes.drawerPaper}}>
+                    <List onClick={this.handleDrawerToggle}>
                         <Link component = {RouterLink} to="/">
-                            Home
+                            <Typography className={classes.typo} variant="h5"><HomeIcon fontSize="inherit" className={classes.icon}/></Typography>
                         </Link>
-                    </MenuItem>
-                    <MenuItem onClick={this.handleDrawerToggle}>
+                    <Divider/>
+                    </List>
+                    <List onClick={this.handleDrawerToggle}>
                         <Link component = {RouterLink} to="/calendar">
-                            예약관리
+                           <Typography className={classes.typo} variant="h5"><DateRangeIcon fontSize="inherit" className={classes.icon}/>일정관리</Typography>
                         </Link>
-                    </MenuItem>
-                    
-                    <MenuItem onClick={this.handleDrawerToggle}>
+                    </List>
+                    <List onClick={this.handleDrawerToggle}>
                         <Link component = {RouterLink} to="/customer">
-                            고객관리
+                            <Typography className={classes.typo} variant="h5"><PermContactCalendarSharpIcon fontSize="inherit" className={classes.icon}/>고객관리</Typography>
                         </Link>
-                    </MenuItem>
-                    <MenuItem onClick={this.handleDrawerToggle}>
+                    </List>
+                    <List onClick={this.handleDrawerToggle}>
                         <Link component = {RouterLink} to="/product">
-                            제품관리
+                            <Typography className={classes.typo} variant="h5"><LocalOfferIcon fontSize="inherit" className={classes.icon}/>제품관리</Typography>
                         </Link>
-                    </MenuItem>
+                    </List>
                 </Drawer>
                 </div>
                 <div id="content" style={{margin: 'auto', marginTop:'20px'}}>
@@ -67,4 +88,30 @@ class AppNav extends React.Component{
     }
 }
 
+
+
+/*
+                        <MenuItem onClick={this.handleDrawerToggle}>
+                            <Link component = {RouterLink} to="/">
+                                Home
+                            </Link>
+                        </MenuItem>
+                        <MenuItem onClick={this.handleDrawerToggle}>
+                            <Link component = {RouterLink} to="/calendar">
+                                예약관리
+                            </Link>
+                        </MenuItem>
+                        
+                        <MenuItem onClick={this.handleDrawerToggle}>
+                            <Link component = {RouterLink} to="/customer">
+                                고객관리
+                            </Link>
+                        </MenuItem>
+                        <MenuItem onClick={this.handleDrawerToggle}>
+                            <Link component = {RouterLink} to="/product">
+                                제품관리
+                            </Link>
+                        </MenuItem>
+                        <Divider/>
+*/
 export default withStyles (styles) (AppNav);

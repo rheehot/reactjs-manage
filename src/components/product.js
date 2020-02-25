@@ -18,6 +18,7 @@ import SnackBar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import InputBase from '@material-ui/core/InputBase';
 import { withStyles } from '@material-ui/core/styles'
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 
 const databaseURL="https://customer-5b5d0.firebaseio.com"
 
@@ -59,8 +60,6 @@ const styles = theme => ({
       marginTop: '10px',
       marginBottom: '10px'
     },
-    TypoWarn: {
-    }
 });
 
 class product extends React.Component{
@@ -119,13 +118,13 @@ class product extends React.Component{
           tag: '',
           productbuy: '',
           productsell: '',
-          productcurrent: '',
         })
       }
   
       handleDialogToggle = () => this.setState({
         dialogadd: !this.state.dialogadd
-      });
+      },
+      this.clear());
   
       handleValueChange = (e) => {
         let nextState = {};
@@ -139,10 +138,10 @@ class product extends React.Component{
           tag: this.state.tag,
           productbuy: this.state.productbuy,
           productsell: this.state.productsell,
-          productcurrent: this.state.productcurrent
+          productcurrent: this.state.productbuy-this.state.productsell
         }
         this.handleDialogToggle();
-        if (!product.name && !product.tag && !product.productbuy && !product.productsell && !product.productcurrent){
+        if (!product.name && !product.tag && !product.productbuy && !product.productsell){
           return;
         }
         this._post(product);
@@ -207,11 +206,13 @@ class product extends React.Component{
               <div className={classes.root}>
                 <Paper className={classes.paper}>
                   <InputBase className={classes.searchbar} placeholder="검색"></InputBase>
-                  <Button className={classes.button} variant="outlined" color="primary">분류1</Button>
-                  <Button className={classes.button} variant="outlined" color="primary">분류2</Button>
-                  <Button className={classes.button} variant="outlined" color="primary">분류3</Button>
-                  <Button className={classes.button} variant="outlined" color="primary">분류4</Button>
-                  <Button className={classes.button} variant="outlined" color="primary">분류5</Button>
+                  <ButtonGroup className={classes.button} variant="outlined" color="primary" aria-label="productTag">
+                    <Button color="primary">분류1</Button>
+                    <Button color="primary">분류2</Button>
+                    <Button color="primary">분류3</Button>
+                    <Button color="primary">분류4</Button>
+                    <Button color="primary">분류5</Button>
+                  </ButtonGroup> 
                 </Paper>
                   <Grid container spacing={0} justify="flex-start">
                       {this.state.products ? Object.keys(this.state.products).map(id => {
@@ -236,21 +237,20 @@ class product extends React.Component{
                           )
                       }) : 
                       <Grid item xs={12}>
-                         <Typography align="center" className={classes.TypoWarn}>제품이 없거나 서버로부터 응답이 없습니다.<br/>제품을 추가하시려면 아래 <AddIcon style={{fontSize:13}}/>버튼을 클릭하여 제품을 추가하십시오.</Typography>
+                         <Typography align="center">제품이 없거나 서버로부터 응답이 없습니다.<br/>제품을 추가하시려면 아래 <AddIcon style={{fontSize:13}}/>버튼을 클릭하여 제품을 추가하십시오.</Typography>
                       </Grid>}
                     </Grid>
                   <Fab color="primary" className={classes.fab} onClick={this.handleDialogToggle}>
                       <AddIcon/>
                   </Fab>
                   <Dialog open={this.state.dialogadd} onClose={this.handleDialogToggle}>
-                      <DialogTitle>고객 추가</DialogTitle>
+                      <DialogTitle>제품 추가</DialogTitle>
                           <DialogContent>
-                              <DialogContentText>고객정보를 추가합니다.</DialogContentText>
+                              <DialogContentText>제품을 추가합니다.</DialogContentText>
                               <TextField label="이름" type="text" name="name" value={this.state.name} onChange={this.handleValueChange}/><br/>
                               <TextField label="분류" type="text" name="tag" value={this.state.tag} onChange={this.handleValueChange}/><br/>
                               <TextField label="구매" type="number" name="productbuy" value={this.state.productbuy} onChange={this.handleValueChange}/><br/>
                               <TextField label="판매" type="number" name="productsell" value={this.state.productsell} onChange={this.handleValueChange}/><br/>
-                              <TextField label="재고" type="number" name="productcurrent" value={this.state.productcurrent} onChange={this.handleValueChange}/><br/>
                           </DialogContent>
                       <DialogActions>
                           <Button variant="contained" color="primary" onClick={() => {this.handleSumbit(); this.clear();}}>추가</Button>

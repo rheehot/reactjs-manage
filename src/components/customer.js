@@ -178,10 +178,15 @@ class customer extends React.Component{
       this.setState({
         name: '',
         course:'',
+        coursebal:'',
+        firstpay:'',
+        amount:'',
         first: '',
         second: '',
         birth: '',
         phone: '',
+        pay: '',
+        left: '',
       })
     }
 
@@ -200,10 +205,15 @@ class customer extends React.Component{
       const customer = {
         name: this.state.name,
         course: this.state.course,
+        corsebal: this.state.coursebal,
+        firstpay: this.state.firstpay,
         first: this.state.first,
         second: this.state.second,
         birth: this.state.birth,
-        phone: this.state.phone
+        phone: this.state.phone,
+        pay: this.state.pay,
+        left: this.state.left
+        
       }
       this.handleDialogToggle();
       if (!customer.name && !customer.course && !customer.first && !customer.second && !customer.birth && !customer.phone){
@@ -267,9 +277,9 @@ class customer extends React.Component{
 
     //검색
     searchValueChange(e) {
-      this.setState({
-        keyword: e.target.value
-      });
+        let nextState = {};
+        nextState[e.target.name] = e.target.value;
+        this.setState(nextState);
     }
 
     //랜더(표시)
@@ -281,7 +291,7 @@ class customer extends React.Component{
       return(
         <div className={classes.root}>
           <Paper className={classes.paper}>
-            <InputBase name="searchKeyword" placeholder="검색" className={classes.searchBar} value={this.state.searchKeyword} onChange={this.handleValueChange}/>
+            <InputBase name="searchKeyword" placeholder="검색" className={classes.searchBar} value={this.state.searchKeyword} onChange={this.searchValueChange}/>
           </Paper>
           <div >
             <Paper className={classes.paper} elevation={3}>
