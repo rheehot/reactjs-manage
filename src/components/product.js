@@ -58,6 +58,8 @@ const styles = theme => ({
       marginRight: '10px',
       marginTop: '10px',
       marginBottom: '10px'
+    },
+    TypoWarn: {
     }
 });
 
@@ -67,6 +69,8 @@ class product extends React.Component{
         this.state={
             products:{},
             dialogadd: false,
+            dialogdel: false,
+            delTargetId: false,
             addalert: false,
             delalert: false,
             name: '',
@@ -169,69 +173,96 @@ class product extends React.Component{
         });
       }
 
+      delToggle = id => {
+        this.setState({
+          delTargetId: id || this.state.delTargetId,
+          dialogdel: !this.state.dialogdel
+        })
+      }
+
+      handleDelete = () => {
+        this.delToggle();
+        this._delete(this.state.delTargetId);
+      }
+
       //데이터 갱신
       componentDidMount(){
         this._get()
       }
 
       //렌더(표시)
-    render(){
-        const {classes} = this.props
-        return(
-            <div className={classes.root}>
-              <Paper className={classes.paper}>
-                <InputBase className={classes.searchbar} placeholder="검색"></InputBase>
-                <Button className={classes.button} variant="outlined" color="primary">분류1</Button>
-                <Button className={classes.button} variant="outlined" color="primary">분류2</Button>
-                <Button className={classes.button} variant="outlined" color="primary">분류3</Button>
-                <Button className={classes.button} variant="outlined" color="primary">분류4</Button>
-                <Button className={classes.button} variant="outlined" color="primary">분류5</Button>
-              </Paper>
-                <Grid container spacing={0} justify="flex-start">
-                    {this.state.products ? Object.keys(this.state.products).map(id => {
-                        const product = this.state.products[id];
-                        return(
-                            <div key={id}>
-                              <Card className={classes.card}>
-                                <CardContent>
-                                  <Typography variant="h5" component="h2">{product.name}</Typography>
-                                  <Typography className={classes.pos} color="textSecondary">{product.tag}</Typography>
-                                  <Typography variant="body2" component="p">제품구입: {product.productbuy}</Typography>
-                                  <Typography variant="body2" component="p">제품판매: {product.productsell}</Typography>
-                                  <Typography variant="body2" component="p">제품재고: {product.productcurrent}</Typography>
-                                </CardContent>
-                                <CardActions>
-                                  <Button size="small">자세히</Button>
-                                </CardActions>
-                              </Card>
-                            </div>
-                        )
-                    }) : <Typography align="center">제품이 없거나 서버로부터 응답이 없습니다.<br/>제품을 추가하시려면 아래 <AddIcon style={{fontSize:13}}/>버튼을 클릭하여 제품을 추가하십시오.</Typography>}
-                </Grid>
-                <Fab color="primary" className={classes.fab} onClick={this.handleDialogToggle}>
-                    <AddIcon/>
-                </Fab>
-                <Dialog open={this.state.dialogadd} onClose={this.handleDialogToggle}>
-                    <DialogTitle>고객 추가</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText>고객정보를 추가합니다.</DialogContentText>
-                            <TextField label="이름" type="text" name="name" value={this.state.name} onChange={this.handleValueChange}/><br/>
-                            <TextField label="분류" type="text" name="tag" value={this.state.tag} onChange={this.handleValueChange}/><br/>
-                            <TextField label="구매" type="text" name="productbuy" value={this.state.productbuy} onChange={this.handleValueChange}/><br/>
-                            <TextField label="판매" type="text" name="productsell" value={this.state.productsell} onChange={this.handleValueChange}/><br/>
-                            <TextField label="재고" type="text" name="productcurrent" value={this.state.productcurrent} onChange={this.handleValueChange}/><br/>
-                        </DialogContent>
-                    <DialogActions>
-                        <Button variant="contained" color="primary" onClick={() => {this.handleSumbit(); this.clear();}}>추가</Button>
-                        <Button variant="outlined" color="primary" onClick={this.handleDialogToggle}>닫기</Button>
-                    </DialogActions>
-                </Dialog>
-                <SnackBar open={this.state.addalert} autoHideDuration={3000} onClose={this.addAlertClose}>
-                  <Alert onClose={this.addAlertClose} severity="success">
-                    제품이 추가되었습니다.
-                  </Alert>
-                </SnackBar>
-            </div>
+      render(){
+          const {classes} = this.props
+          const id = this.delTargetId
+          return(
+              <div className={classes.root}>
+                <Paper className={classes.paper}>
+                  <InputBase className={classes.searchbar} placeholder="검색"></InputBase>
+                  <Button className={classes.button} variant="outlined" color="primary">분류1</Button>
+                  <Button className={classes.button} variant="outlined" color="primary">분류2</Button>
+                  <Button className={classes.button} variant="outlined" color="primary">분류3</Button>
+                  <Button className={classes.button} variant="outlined" color="primary">분류4</Button>
+                  <Button className={classes.button} variant="outlined" color="primary">분류5</Button>
+                </Paper>
+                  <Grid container spacing={0} justify="flex-start">
+                      {this.state.products ? Object.keys(this.state.products).map(id => {
+                          const product = this.state.products[id];
+                          return(
+                              <div key={id}>
+                                <Grid item xs={12}>
+                                  <Card className={classes.card}>
+                                    <CardContent>
+                                      <Typography variant="h5" component="h2">{product.name}</Typography>
+                                      <Typography className={classes.pos} color="textSecondary">{product.tag}</Typography>
+                                      <Typography variant="body2" component="p">제품구입: {product.productbuy}</Typography>
+                                      <Typography variant="body2" component="p">제품판매: {product.productsell}</Typography>
+                                      <Typography variant="body2" component="p">제품재고: {product.productcurrent}</Typography>
+                                    </CardContent>
+                                    <CardActions>
+                                      <Button size="small">자세히</Button><Button size="small" onClick={() => {this.delToggle(id)}}>삭제</Button>
+                                    </CardActions>
+                                  </Card>
+                                </Grid>
+                              </div>
+                          )
+                      }) : 
+                      <Grid item xs={12}>
+                         <Typography align="center" className={classes.TypoWarn}>제품이 없거나 서버로부터 응답이 없습니다.<br/>제품을 추가하시려면 아래 <AddIcon style={{fontSize:13}}/>버튼을 클릭하여 제품을 추가하십시오.</Typography>
+                      </Grid>}
+                    </Grid>
+                  <Fab color="primary" className={classes.fab} onClick={this.handleDialogToggle}>
+                      <AddIcon/>
+                  </Fab>
+                  <Dialog open={this.state.dialogadd} onClose={this.handleDialogToggle}>
+                      <DialogTitle>고객 추가</DialogTitle>
+                          <DialogContent>
+                              <DialogContentText>고객정보를 추가합니다.</DialogContentText>
+                              <TextField label="이름" type="text" name="name" value={this.state.name} onChange={this.handleValueChange}/><br/>
+                              <TextField label="분류" type="text" name="tag" value={this.state.tag} onChange={this.handleValueChange}/><br/>
+                              <TextField label="구매" type="text" name="productbuy" value={this.state.productbuy} onChange={this.handleValueChange}/><br/>
+                              <TextField label="판매" type="text" name="productsell" value={this.state.productsell} onChange={this.handleValueChange}/><br/>
+                              <TextField label="재고" type="text" name="productcurrent" value={this.state.productcurrent} onChange={this.handleValueChange}/><br/>
+                          </DialogContent>
+                      <DialogActions>
+                          <Button variant="contained" color="primary" onClick={() => {this.handleSumbit(); this.clear();}}>추가</Button>
+                          <Button variant="outlined" color="primary" onClick={this.handleDialogToggle}>닫기</Button>
+                      </DialogActions>
+                  </Dialog>
+                  <Dialog open={this.state.dialogdel} onClose={this.delToggle}>
+                    <DialogTitle>경고</DialogTitle>
+                      <DialogContent>
+                        <Typography>테스트입니다</Typography>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={()=>{this.handleDelete(id)}}>삭제</Button>
+                      </DialogActions>
+                  </Dialog>
+                  <SnackBar open={this.state.addalert} autoHideDuration={3000} onClose={this.addAlertClose}>
+                    <Alert onClose={this.addAlertClose} severity="success">
+                      제품이 추가되었습니다.
+                    </Alert>
+                  </SnackBar>
+              </div>
         )
     }
 }

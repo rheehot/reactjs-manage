@@ -67,8 +67,6 @@ const styles = theme => ({
     formControl: {
       minWidth: 180
     },
-    selectEmpty:{
-    }
   });
 
 class customer extends React.Component{
@@ -187,9 +185,10 @@ class customer extends React.Component{
       })
     }
 
-    handleDialogToggle = () => this.setState({
+    handleDialogToggle = () => {this.setState({
       dialogadd: !this.state.dialogadd
-    });
+    })
+    this.clear()};
 
     handleValueChange = (e) => {
       let nextState = {};
@@ -426,7 +425,6 @@ class customer extends React.Component{
   현금,상품권 : 현금영수증
   카드 : 카드번호,승인번호
   */
-
   //label="코스" type="text" name="course" <TextField label="코스" type="text" name="course" value={this.state.course} onChange={this.handleValueChange}/>
   
 export default withStyles (styles) (customer)
