@@ -170,6 +170,7 @@ class product extends React.Component{
           delete nextState[id];
           this.setState({products: nextState});
           this.componentDidMount();
+          this.delAlertOpen();
         });
       }
 
@@ -184,6 +185,14 @@ class product extends React.Component{
         this.delToggle();
         this._delete(this.state.delTargetId);
       }
+
+      delAlertOpen = () => this.setState({
+        delalert: true
+      })
+
+      delAlertClose = () => this.setState({
+        delalert: false
+      })
 
       //데이터 갱신
       componentDidMount(){
@@ -239,9 +248,9 @@ class product extends React.Component{
                               <DialogContentText>고객정보를 추가합니다.</DialogContentText>
                               <TextField label="이름" type="text" name="name" value={this.state.name} onChange={this.handleValueChange}/><br/>
                               <TextField label="분류" type="text" name="tag" value={this.state.tag} onChange={this.handleValueChange}/><br/>
-                              <TextField label="구매" type="text" name="productbuy" value={this.state.productbuy} onChange={this.handleValueChange}/><br/>
-                              <TextField label="판매" type="text" name="productsell" value={this.state.productsell} onChange={this.handleValueChange}/><br/>
-                              <TextField label="재고" type="text" name="productcurrent" value={this.state.productcurrent} onChange={this.handleValueChange}/><br/>
+                              <TextField label="구매" type="number" name="productbuy" value={this.state.productbuy} onChange={this.handleValueChange}/><br/>
+                              <TextField label="판매" type="number" name="productsell" value={this.state.productsell} onChange={this.handleValueChange}/><br/>
+                              <TextField label="재고" type="number" name="productcurrent" value={this.state.productcurrent} onChange={this.handleValueChange}/><br/>
                           </DialogContent>
                       <DialogActions>
                           <Button variant="contained" color="primary" onClick={() => {this.handleSumbit(); this.clear();}}>추가</Button>
@@ -251,15 +260,21 @@ class product extends React.Component{
                   <Dialog open={this.state.dialogdel} onClose={this.delToggle}>
                     <DialogTitle>경고</DialogTitle>
                       <DialogContent>
-                        <Typography>테스트입니다</Typography>
+                        <Typography>고객정보를 삭제하시겠습니까?</Typography>
                       </DialogContent>
                       <DialogActions>
-                        <Button onClick={()=>{this.handleDelete(id)}}>삭제</Button>
+                        <Button variant="contained" color="secondary" onClick={()=>{this.handleDelete(id)}}>예</Button>
+                        <Button variant="outlined" color="primary" onClick={this.delToggle}>아니오</Button>
                       </DialogActions>
                   </Dialog>
                   <SnackBar open={this.state.addalert} autoHideDuration={3000} onClose={this.addAlertClose}>
                     <Alert onClose={this.addAlertClose} severity="success">
                       제품이 추가되었습니다.
+                    </Alert>
+                  </SnackBar>
+                  <SnackBar open={this.state.delalert} autoHideDuration={3000} onClose={this.delAlertClose}>
+                    <Alert onClose={this.delAlertClose} severity="success">
+                      제품이 삭제되었습니다.
                     </Alert>
                   </SnackBar>
               </div>
