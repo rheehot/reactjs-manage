@@ -260,7 +260,7 @@ class product extends React.Component{
                   <Dialog open={this.state.dialogdel} onClose={this.delToggle}>
                     <DialogTitle>경고</DialogTitle>
                       <DialogContent>
-                        <Typography>고객정보를 삭제하시겠습니까?</Typography>
+                        <Typography>제품을 삭제하시겠습니까?</Typography>
                       </DialogContent>
                       <DialogActions>
                         <Button variant="contained" color="secondary" onClick={()=>{this.handleDelete(id)}}>예</Button>
