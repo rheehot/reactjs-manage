@@ -73,7 +73,6 @@ class calendar extends React.Component{
     }
   }
 
-  
     //데이터 불러오기
     _get = async() => {
       fetch(`${databaseURL}/customers.json`).then(res=>{
@@ -89,23 +88,23 @@ class calendar extends React.Component{
     }
 
     //보기 형식(일간/주간/월간)
-  setViewToDay = () => {
-    this.setState({
-      view: 'day',
-    })
-  }
+    setViewToDay = () => {
+      this.setState({
+        view: 'day',
+      })
+    }
 
-  setViewToWeek = () => {
-    this.setState({
-      view: 'week',
-    })
-  }
+    setViewToWeek = () => {
+      this.setState({
+        view: 'week',
+      })
+    }
 
-  setViewToMon = () => {
-    this.setState({
-      view: 'month',
-    })
-  }
+    setViewToMon = () => {
+      this.setState({
+        view: 'month',
+      })
+    }
 
   //표시(랜더링)
     render(){

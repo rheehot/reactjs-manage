@@ -25,16 +25,14 @@ const styles = theme => ({
         marginRight: '20px',
         marginTop: '20px',
         marginBottom: '20px',
-    }
+    },
 })
 class Home extends React.Component{
     render(){
         const { classes } = this.props
         return(
             <div className={classes.root}>
-                <Typography className={classes.Typography} variant="h4">
-                    대시보드
-                </Typography>
+                <Typography className={classes.Typography} variant="h4">대시보드</Typography>
                 <Grid container spacing={0} justify="center">
                     <Card className={classes.Card}>
                         <CardContent>
