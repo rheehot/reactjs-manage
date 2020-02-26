@@ -60,18 +60,32 @@ const styles = theme => ({
     }
 });
 
-const optionProps = [
-  'disableDblClick',
-  'isReadOnly',
-  'month',
-  'scheduleView',
-  'taskView',
-  'theme',
-  'timezones',
-  'week'
-]
-
 class calendar extends React.Component{
+
+  constructor(){
+    super();
+    this.state={
+      view: 'day',
+    }
+  }
+
+  setViewToDay = () => {
+    this.setState({
+      view: 'day',
+    })
+  }
+
+  setViewToWeek = () => {
+    this.setState({
+      view: 'week',
+    })
+  }
+
+  setViewToMon = () => {
+    this.setState({
+      view: 'month',
+    })
+  }
     render(){
         const {classes} = this.props
         return(
@@ -79,13 +93,13 @@ class calendar extends React.Component{
               <Paper className={classes.paper} elevation={3}>
                 <InputBase className={classes.searchbar} placeholder="검색"></InputBase>
                 <ButtonGroup  variant="outlined" color="primary" aria-label="productTag">
-                  <Button>일간</Button>
-                  <Button>주간</Button>
-                  <Button>월간</Button>
+                  <Button onClick={this.setViewToDay}>일간</Button>
+                  <Button onClick={this.setViewToWeek}>주간</Button>
+                  <Button onClick={this.setViewToMon}>월간</Button>
                 </ButtonGroup>
               </Paper>
               <Paper className={classes.calendarSize} elevation={3}>
-                <Calendar/>
+                <Calendar view={this.state.view} usageStatistics={false}/>
               </Paper>
             </div>
         )
