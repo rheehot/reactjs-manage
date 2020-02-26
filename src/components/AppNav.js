@@ -13,6 +13,7 @@ import DateRangeIcon from '@material-ui/icons/DateRange';
 import PermContactCalendarSharpIcon from '@material-ui/icons/PermContactCalendarSharp';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import HomeIcon from '@material-ui/icons/Home';
+import CloseIcon from '@material-ui/icons/Close';
 
 const drawerWidth = 180;
 
@@ -31,10 +32,16 @@ const styles ={
         width: drawerWidth,
     },
     typo:{
-        marginLeft: 15
+        marginLeft: 15,
+        alignItems: 'center',
+        display: 'flex'
     },
     icon:{
-        marginRight: 15,
+        verticalAlign: 'middle',
+        marginRight: 15
+    },
+    close:{
+        marginLeft: 4
     }
 };
 
@@ -53,29 +60,32 @@ class AppNav extends React.Component{
                 <div className={classes.root}>
                 <AppBar position="static">
                     <IconButton className={classes.menuButton} color="inherit" onClick={this.handleDrawerToggle}>
-                        <MenuIcon/>
+                        <MenuIcon className={classes.icon}/><Typography className={classes.typo} variant="h5">React 산전케어 프로그램</Typography>
                     </IconButton>
                 </AppBar>
                 <Drawer open={this.state.toggle} className={classes.drawer} classes={{paper: classes.drawerPaper}}>
-                    <List onClick={this.handleDrawerToggle}>
-                        <Link component = {RouterLink} to="/">
-                            <Typography className={classes.typo} variant="h5"><HomeIcon fontSize="inherit" className={classes.icon}/></Typography>
-                        </Link>
+                    <IconButton className={classes.menuButton} color="inherit" onClick={this.handleDrawerToggle}>
+                        <CloseIcon className={classes.close}/>
+                    </IconButton>
                     <Divider/>
-                    </List>
                     <List onClick={this.handleDrawerToggle}>
-                        <Link component = {RouterLink} to="/calendar">
-                           <Typography className={classes.typo} variant="h5"><DateRangeIcon fontSize="inherit" className={classes.icon}/>일정관리</Typography>
+                        <Link component = {RouterLink} to="/" color="inherit">
+                            <Typography className={classes.typo} variant="h5"><HomeIcon className={classes.icon}/>대시보드</Typography>
                         </Link>
                     </List>
                     <List onClick={this.handleDrawerToggle}>
-                        <Link component = {RouterLink} to="/customer">
-                            <Typography className={classes.typo} variant="h5"><PermContactCalendarSharpIcon fontSize="inherit" className={classes.icon}/>고객관리</Typography>
+                        <Link component = {RouterLink} to="/calendar" color="inherit">
+                           <Typography className={classes.typo} variant="h5" ><DateRangeIcon className={classes.icon}/>일정관리</Typography>
                         </Link>
                     </List>
                     <List onClick={this.handleDrawerToggle}>
-                        <Link component = {RouterLink} to="/product">
-                            <Typography className={classes.typo} variant="h5"><LocalOfferIcon fontSize="inherit" className={classes.icon}/>제품관리</Typography>
+                        <Link component = {RouterLink} to="/customer" color="inherit">
+                            <Typography className={classes.typo} variant="h5"><PermContactCalendarSharpIcon className={classes.icon}/>고객관리</Typography>
+                        </Link>
+                    </List>
+                    <List onClick={this.handleDrawerToggle}>
+                        <Link component = {RouterLink} to="/product" color="inherit">
+                            <Typography className={classes.typo} variant="h5"><LocalOfferIcon className={classes.icon}/>제품관리</Typography>
                         </Link>
                     </List>
                 </Drawer>
@@ -87,31 +97,4 @@ class AppNav extends React.Component{
         )
     }
 }
-
-
-
-/*
-                        <MenuItem onClick={this.handleDrawerToggle}>
-                            <Link component = {RouterLink} to="/">
-                                Home
-                            </Link>
-                        </MenuItem>
-                        <MenuItem onClick={this.handleDrawerToggle}>
-                            <Link component = {RouterLink} to="/calendar">
-                                예약관리
-                            </Link>
-                        </MenuItem>
-                        
-                        <MenuItem onClick={this.handleDrawerToggle}>
-                            <Link component = {RouterLink} to="/customer">
-                                고객관리
-                            </Link>
-                        </MenuItem>
-                        <MenuItem onClick={this.handleDrawerToggle}>
-                            <Link component = {RouterLink} to="/product">
-                                제품관리
-                            </Link>
-                        </MenuItem>
-                        <Divider/>
-*/
 export default withStyles (styles) (AppNav);
