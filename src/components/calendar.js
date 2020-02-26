@@ -17,11 +17,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import SnackBar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
-import Typography from '@material-ui/core/Typography';*/
+import Alert from '@material-ui/lab/Alert';*/
 
-
-//const databaseURL="https://customer-5b5d0.firebaseio.com"
+/*파이어베이스 DB URL */
+const databaseURL="https://customer-5b5d0.firebaseio.com"
 
 const styles = theme => ({
     root: {
@@ -57,8 +56,13 @@ const styles = theme => ({
     calendarSize: {
       marginLeft:18,
       marginRight:18
+    },
+    datetypo: {
+      marginLeft:8,
     }
 });
+
+
 
 class calendar extends React.Component{
 
@@ -69,6 +73,22 @@ class calendar extends React.Component{
     }
   }
 
+  
+    //데이터 불러오기
+    _get = async() => {
+      fetch(`${databaseURL}/customers.json`).then(res=>{
+        if(res.status !== 200){
+          throw new Error(res.statusText);
+        }
+        return res.json();
+      }).then(customers => this.setState({customers: customers}))
+      .catch(err => console.log(err));
+      const responce = await fetch(`${databaseURL}/customers.json`);
+      const body = await responce.json();
+      return body;
+    }
+
+    //보기 형식(일간/주간/월간)
   setViewToDay = () => {
     this.setState({
       view: 'day',
@@ -86,6 +106,8 @@ class calendar extends React.Component{
       view: 'month',
     })
   }
+
+  //표시(랜더링)
     render(){
         const {classes} = this.props
         return(
