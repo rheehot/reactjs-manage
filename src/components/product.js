@@ -19,6 +19,11 @@ import Alert from '@material-ui/lab/Alert';
 import InputBase from '@material-ui/core/InputBase';
 import { withStyles } from '@material-ui/core/styles'
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/tableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
+import Table from '@material-ui/core/Table';
 
 const databaseURL="https://customer-5b5d0.firebaseio.com"
 
@@ -72,11 +77,14 @@ class product extends React.Component{
             delTargetId: false,
             addalert: false,
             delalert: false,
+            dialogdetail:false,
             name: '',
             tag: '',
             productbuy: '',
             productsell: '',
             productcurrent: '',
+            buydate:'',
+            usedate:'',
         }
     }
 
@@ -138,7 +146,9 @@ class product extends React.Component{
           tag: this.state.tag,
           productbuy: this.state.productbuy,
           productsell: this.state.productsell,
-          productcurrent: this.state.productbuy-this.state.productsell
+          productcurrent: this.state.productbuy-this.state.productsell,
+          usedate:this.state.usedate,
+          selldate:this.state.selldate
         }
         this.handleDialogToggle();
         if (!product.name && !product.tag && !product.productbuy && !product.productsell){
@@ -153,6 +163,11 @@ class product extends React.Component{
 
       addAlertClose = () => this.setState({
         addalert: false
+      })
+
+      //디테일
+      handleDetail = () => this.setState({
+        dialogdetail: !this.state.dialogdetail
       })
 
       //데이터 삭제
@@ -202,16 +217,15 @@ class product extends React.Component{
       render(){
           const {classes} = this.props
           const id = this.delTargetId
+          const cellList = ["구입일자","구입수량","사용일자","사용수량","재고현황"]
           return(
               <div className={classes.root}>
                 <Paper className={classes.paper}>
                   <InputBase className={classes.searchbar} placeholder="검색"></InputBase>
                   <ButtonGroup className={classes.button} variant="outlined" color="primary" aria-label="productTag">
-                    <Button color="primary">분류1</Button>
-                    <Button color="primary">분류2</Button>
-                    <Button color="primary">분류3</Button>
-                    <Button color="primary">분류4</Button>
-                    <Button color="primary">분류5</Button>
+                    <Button color="primary">바디</Button>
+                    <Button color="primary">페이스</Button>
+                    <Button color="primary">부자재</Button>
                   </ButtonGroup> 
                 </Paper>
                   <Grid container spacing={0} justify="flex-start">
@@ -225,11 +239,11 @@ class product extends React.Component{
                                       <Typography variant="h5" component="h2">{product.name}</Typography>
                                       <Typography className={classes.pos} color="textSecondary">{product.tag}</Typography>
                                       <Typography variant="body2" component="p">제품구입: {product.productbuy}</Typography>
-                                      <Typography variant="body2" component="p">제품판매: {product.productsell}</Typography>
+                                      <Typography variant="body2" component="p">제품사용: {product.productsell}</Typography>
                                       <Typography variant="body2" component="p">제품재고: {product.productcurrent}</Typography>
                                     </CardContent>
                                     <CardActions>
-                                      <Button size="small">자세히</Button><Button size="small" onClick={() => {this.delToggle(id)}}>삭제</Button>
+                                      <Button size="small" onClick={this.handleDetail}>자세히</Button><Button size="small" onClick={() => {this.delToggle(id)}}>삭제</Button>
                                     </CardActions>
                                   </Card>
                                 </Grid>
@@ -267,6 +281,30 @@ class product extends React.Component{
                         <Button variant="outlined" color="primary" onClick={this.delToggle}>아니오</Button>
                       </DialogActions>
                   </Dialog>
+                  <Dialog open={this.state.dialogdetail} onClose={this.handleDetail}>
+                    <DialogTitle>제품정보</DialogTitle>
+                      <DialogContent>
+                        <TextField label="구매일자" type="date" name="buydate" InputLabelProps={{shrink:true}} value={this.state.buydate} onChange={this.handleValueChange}/>
+                        <TextField label="구매수량" type="number" name="productbuy" value={this.state.productbuy} onChange={this.handleValueChange}/><br/>
+                        <TextField label="사용일자" type="date" name="usedate" InputLabelProps={{shrink:true}} value={this.state.usedate} onChange={this.handleValueChange}/>
+                        <TextField label="사용수량" type="number" name="productsell" value={this.state.productsell} onChange={this.handleValueChange}/><br/>
+                        <Table>
+                          <TableHead>
+                            <TableRow>
+                             {cellList.map(c => {return <TableCell align="center" className={classes.tableHead} key={c}>{c}</TableCell>})}
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            <TableRow>
+                              
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button variant="outlined" color="primary" onClick={this.handleDetail}>확인</Button>
+                      </DialogActions>
+                  </Dialog>
                   <SnackBar open={this.state.addalert} autoHideDuration={3000} onClose={this.addAlertClose}>
                     <Alert onClose={this.addAlertClose} severity="success">
                       제품이 추가되었습니다.
@@ -281,5 +319,33 @@ class product extends React.Component{
         )
     }
 }
+
+/*제품분류**/
+/*
+바디(오일,크림)
+페이스
+부자재
+
+<Button color="primary">분류4</Button>
+<Button color="primary">분류5</Button>
+*/
+
+/*
+              <Table className={classes.table}>
+                <TableHead>
+                  <TableRow>
+                    {cellList.map(c => {return <TableCell align="center" className={classes.tableHead} key={c}>{c}</TableCell>})}
+                  </TableRow>
+                </TableHead> 
+                <TableBody>
+                  <TableRow>
+
+                </TableBody>
+              </Table>
+
+
+
+
+*/
 
 export default withStyles (styles) (product);
