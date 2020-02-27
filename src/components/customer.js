@@ -1,12 +1,12 @@
 import 'date-fns';
 import React from 'react';
+import Table from '@material-ui/core/Table';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/tableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -213,7 +213,6 @@ class customer extends React.Component{
         phone: this.state.phone,
         pay: this.state.pay,
         left: this.state.left
-        
       }
       this.handleDialogToggle();
       if (!customer.name && !customer.course && !customer.first && !customer.second && !customer.birth && !customer.phone){
@@ -366,10 +365,10 @@ class customer extends React.Component{
                   <TextField label="잔액" type="number" name="amount" value={this.state.amount} onChange={this.handleValueChange}/>
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField label="1차" type="text" name="first" value={this.state.first} onChange={this.handleValueChange}/>
+                  <TextField label="1차" type="date" name="first" value={this.state.first} onChange={this.handleValueChange} InputLabelProps={{shrink:true}}/>
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField label="2차" type="text" name="second" value={this.state.second} onChange={this.handleValueChange}/>
+                  <TextField label="2차" type="date" name="second" value={this.state.second} InputLabelProps={{shrink:true}} onChange={this.handleValueChange}/>
                 </Grid>
               </Grid> 
             </DialogContent>
