@@ -106,14 +106,14 @@ class calendar extends React.Component{
       })
     }
 
-  //표시(랜더링)
+  //표시(랜더)
     render(){
         const {classes} = this.props
         return(
             <div className={classes.root}>
               <Paper className={classes.paper} elevation={3}>
                 <InputBase className={classes.searchbar} placeholder="검색"></InputBase>
-                <ButtonGroup  variant="outlined" color="primary" aria-label="productTag">
+                <ButtonGroup  variant="outlined" color="primary">
                   <Button onClick={this.setViewToDay}>일간</Button>
                   <Button onClick={this.setViewToWeek}>주간</Button>
                   <Button onClick={this.setViewToMon}>월간</Button>
