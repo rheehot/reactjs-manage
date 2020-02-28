@@ -274,9 +274,8 @@ class customer extends React.Component{
 
     //검색
     searchValueChange(e) {
-        let nextState = {};
-        nextState[e.target.name] = e.target.value;
-        this.setState(nextState);
+      this.setState({ searchKeyword: e.target.value })
+      console.log(this.state.searchKeyword)
     }
 
     //랜더(표시)
