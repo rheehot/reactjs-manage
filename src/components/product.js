@@ -85,6 +85,7 @@ class product extends React.Component{
             productcurrent: '',
             buydate:'',
             usedate:'',
+            searchKeyword:'',
         }
     }
 
@@ -213,6 +214,12 @@ class product extends React.Component{
         this._get()
       }
 
+      //검색
+      searchInput = (e) =>{
+        this.setState({ searchKeyword: e.target.value })
+        console.log(this.state.searchKeyword)
+      }
+
       //렌더(표시)
       render(){
           const {classes} = this.props
@@ -221,8 +228,9 @@ class product extends React.Component{
           return(
               <div className={classes.root}>
                 <Paper className={classes.paper}>
-                  <InputBase className={classes.searchbar} placeholder="검색"></InputBase>
+                  <InputBase className={classes.searchbar} name="searchKeyword" onChange={this.searchInput} value={this.state.searchKeyword} placeholder="검색"></InputBase>
                   <ButtonGroup className={classes.button} variant="outlined" color="primary" aria-label="productTag">
+                    <Button color="primary">전체</Button>
                     <Button color="primary">바디</Button>
                     <Button color="primary">페이스</Button>
                     <Button color="primary">부자재</Button>
@@ -328,9 +336,7 @@ class product extends React.Component{
 
 <Button color="primary">분류4</Button>
 <Button color="primary">분류5</Button>
-*/
 
-/*
               <Table className={classes.table}>
                 <TableHead>
                   <TableRow>
@@ -342,10 +348,6 @@ class product extends React.Component{
 
                 </TableBody>
               </Table>
-
-
-
-
 */
 
 export default withStyles (styles) (product);

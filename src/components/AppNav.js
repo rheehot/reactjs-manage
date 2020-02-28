@@ -74,17 +74,17 @@ class AppNav extends React.Component{
                         </Link>
                     </List>
                     <List onClick={this.handleDrawerToggle}>
-                        <Link component = {RouterLink} to="/calendar" color="inherit">
+                        <Link component = {RouterLink} to="/calendar/" color="inherit">
                            <Typography className={classes.typo} variant="h5" ><DateRangeIcon className={classes.icon}/>일정관리</Typography>
                         </Link>
                     </List>
                     <List onClick={this.handleDrawerToggle}>
-                        <Link component = {RouterLink} to="/customer" color="inherit">
+                        <Link component = {RouterLink} to="/customer/" color="inherit">
                             <Typography className={classes.typo} variant="h5"><PermContactCalendarSharpIcon className={classes.icon}/>고객관리</Typography>
                         </Link>
                     </List>
                     <List onClick={this.handleDrawerToggle}>
-                        <Link component = {RouterLink} to="/product" color="inherit">
+                        <Link component = {RouterLink} to="/product/" color="inherit">
                             <Typography className={classes.typo} variant="h5"><LocalOfferIcon className={classes.icon}/>제품관리</Typography>
                         </Link>
                     </List>

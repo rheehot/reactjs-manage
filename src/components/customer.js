@@ -218,7 +218,6 @@ class customer extends React.Component{
       if (!customer.name && !customer.course && !customer.first && !customer.second && !customer.birth && !customer.phone){
         return;
       }
-      
       this._post(customer);
     }
 
@@ -229,8 +228,8 @@ class customer extends React.Component{
     addAlertClose = () => this.setState({
       addalert: false
     })
-    //데이터 삭제
 
+    //데이터 삭제
     _delete(id){
       return fetch(`${databaseURL}/customers/${id}.json`,{
         method:'DELETE'
@@ -269,7 +268,6 @@ class customer extends React.Component{
     })
 
     //데이터 새로고침
-
     componentDidMount(){
       this._get()
     }
@@ -340,21 +338,18 @@ class customer extends React.Component{
                   <TextField label="전화번호" type="text" name="phone" value={this.state.phone} onChange={this.handleValueChange}/>
                 </Grid>
                 <Grid item xs={4}>
-                  <TextField label="예정일" type="text" name="birth" value={this.state.birth} onChange={this.handleValueChange}/>
+                  <TextField label="예정일" type="date" name="birth" value={this.state.birth}  InputLabelProps={{shrink:true}} onChange={this.handleValueChange}/>
                 </Grid>
                 <Grid item xs={4}>
                   <FormControl className={classes.formControl}>
                     <InputLabel>코스</InputLabel>
                       <Select id="course-select-label" value={this.state.course} onChange={this.handleValueChange}>
-                        <MenuItem labelid="course-select-label" id="course-select" disabled>
-                          코스
-                        </MenuItem>
-                        <MenuItem value="미정">미정</MenuItem>
-                        <MenuItem value="로얄">로얄</MenuItem>
-                        <MenuItem value="럭셔리">럭셔리</MenuItem>
-                        <MenuItem value="스페셜">스페셜</MenuItem>
-                        <MenuItem value="베이직">베이직</MenuItem>
-                        <MenuItem value="스텐다드">스텐다드</MenuItem>
+                        <MenuItem value={3000000}>미정</MenuItem>
+                        <MenuItem value={3000000}>로얄</MenuItem>
+                        <MenuItem value={3000000}>럭셔리</MenuItem>
+                        <MenuItem value={3000000}>스페셜</MenuItem>
+                        <MenuItem value={3000000}>베이직</MenuItem>
+                        <MenuItem value={3000000}>스텐다드</MenuItem>
                       </Select>
                   </FormControl>
                 </Grid>
@@ -433,6 +428,25 @@ class customer extends React.Component{
 
   현금,상품권 : 현금영수증
   카드 : 카드번호,승인번호
+
+
+
+
+
+  <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="demo-dialog-native">Age</InputLabel>
+              <Select
+                native
+                value={age}
+                onChange={handleChange}
+                input={<Input id="demo-dialog-native" />}
+              >
+                <option value="" />
+                <option value={10}>Ten</option>
+                <option value={20}>Twenty</option>
+                <option value={30}>Thirty</option>
+              </Select>
+            </FormControl>
   */
   //label="코스" type="text" name="course" <TextField label="코스" type="text" name="course" value={this.state.course} onChange={this.handleValueChange}/>
   
