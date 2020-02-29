@@ -220,11 +220,32 @@ class product extends React.Component{
         console.log(this.state.searchKeyword)
       }
 
+      //필터
+
       //렌더(표시)
       render(){
           const {classes} = this.props
           const id = this.delTargetId
-          const cellList = ["구입일자","구입수량","사용일자","사용수량","재고현황"]
+          const cellList = ["구입일자","구입수량","사용일자","사용수량","재고현황","설정"]
+          const filter = this.state.products ? Object.keys(this.state.products).filter(id => {
+            const product = this.state.products[id];
+            return(
+                <div key={id}>
+                  <Card>
+                    <CardContent>
+                      <Typography variant="h5" component="h2">{product.name}</Typography>
+                      <Typography className={classes.pos} color="textSecondary">{product.tag === '게임'}</Typography>
+                      <Typography variant="body2" component="p">제품구입: {product.productbuy}</Typography>
+                      <Typography variant="body2" component="p">제품사용: {product.productsell}</Typography>
+                      <Typography variant="body2" component="p">제품재고: {product.productcurrent}</Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button size="small" onClick={this.handleDetail}>자세히</Button><Button size="small" onClick={() => {this.delToggle(id)}}>삭제</Button>
+                    </CardActions>
+                  </Card>
+                </div>
+            )
+          }): <div/>
           return(
               <div className={classes.root}>
                 <Paper className={classes.paper}>
