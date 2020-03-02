@@ -22,7 +22,11 @@ const styles ={
         flexGrow: 1,
     },
     menuButton: {
-        marginRight:'auto'
+        marginRight:'auto',
+        '&:hover': {
+            opacity: 0.8,
+            transition: '0.2s'
+         },
     },
     drawer:{
         width: drawerWidth,
@@ -34,15 +38,24 @@ const styles ={
     typo:{
         marginLeft: 15,
         alignItems: 'center',
-        display: 'flex'
+        display: 'flex',
+        '&:hover': {
+            opacity: 0.8,
+            transition: '0.2s'
+         },
+        
     },
     icon:{
         verticalAlign: 'middle',
-        marginRight: 15
+        marginRight: 15,
+        '&:hover': {
+            opacity: 0.8,
+            transition: '0.2s'
+         },
     },
     close:{
         marginLeft: 4
-    }
+    },
 };
 
 class AppNav extends React.Component{
@@ -69,22 +82,22 @@ class AppNav extends React.Component{
                     </IconButton>
                     <Divider/>
                     <List onClick={this.handleDrawerToggle}>
-                        <Link component = {RouterLink} to="/" color="inherit">
+                        <Link component = {RouterLink} to="/" color="inherit" style={{textDecoration: 'none'}}>
                             <Typography className={classes.typo} variant="h5"><HomeIcon className={classes.icon}/>대시보드</Typography>
                         </Link>
                     </List>
                     <List onClick={this.handleDrawerToggle}>
-                        <Link component = {RouterLink} to="/calendar/" color="inherit">
+                        <Link component = {RouterLink} to="/calendar/" color="inherit" style={{textDecoration: 'none'}}>
                            <Typography className={classes.typo} variant="h5" ><DateRangeIcon className={classes.icon}/>일정관리</Typography>
                         </Link>
                     </List>
                     <List onClick={this.handleDrawerToggle}>
-                        <Link component = {RouterLink} to="/customer/" color="inherit">
+                        <Link component = {RouterLink} to="/customer/" color="inherit" style={{textDecoration: 'none'}}>
                             <Typography className={classes.typo} variant="h5"><PermContactCalendarSharpIcon className={classes.icon}/>고객관리</Typography>
                         </Link>
                     </List>
                     <List onClick={this.handleDrawerToggle}>
-                        <Link component = {RouterLink} to="/product/" color="inherit">
+                        <Link component = {RouterLink} to="/product/" color="inherit" style={{textDecoration: 'none'}}>
                             <Typography className={classes.typo} variant="h5"><LocalOfferIcon className={classes.icon}/>제품관리</Typography>
                         </Link>
                     </List>

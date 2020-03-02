@@ -74,10 +74,10 @@ class product extends React.Component{
             products:{},
             dialogadd: false,
             dialogdel: false,
-            delTargetId: false,
             addalert: false,
             delalert: false,
             dialogdetail:false,
+            targetId: '',
             name: '',
             tag: '',
             productbuy: '',
@@ -168,7 +168,8 @@ class product extends React.Component{
 
       //디테일
       handleDetail = () => this.setState({
-        dialogdetail: !this.state.dialogdetail
+        dialogdetail: !this.state.dialogdetail,
+       // detailTargetId: id || this.state.targetId,
       })
 
       //데이터 삭제
@@ -191,7 +192,7 @@ class product extends React.Component{
 
       delToggle = id => {
         this.setState({
-          delTargetId: id || this.state.delTargetId,
+          delTargetId: id || this.state.targetId,
           dialogdel: !this.state.dialogdel
         })
       }
@@ -225,27 +226,8 @@ class product extends React.Component{
       //렌더(표시)
       render(){
           const {classes} = this.props
-          const id = this.delTargetId
+          const id = this.targetId
           const cellList = ["구입일자","구입수량","사용일자","사용수량","재고현황","설정"]
-          const filter = this.state.products ? Object.keys(this.state.products).filter(id => {
-            const product = this.state.products[id];
-            return(
-                <div key={id}>
-                  <Card>
-                    <CardContent>
-                      <Typography variant="h5" component="h2">{product.name}</Typography>
-                      <Typography className={classes.pos} color="textSecondary">{product.tag === '게임'}</Typography>
-                      <Typography variant="body2" component="p">제품구입: {product.productbuy}</Typography>
-                      <Typography variant="body2" component="p">제품사용: {product.productsell}</Typography>
-                      <Typography variant="body2" component="p">제품재고: {product.productcurrent}</Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button size="small" onClick={this.handleDetail}>자세히</Button><Button size="small" onClick={() => {this.delToggle(id)}}>삭제</Button>
-                    </CardActions>
-                  </Card>
-                </div>
-            )
-          }): <div/>
           return(
               <div className={classes.root}>
                 <Paper className={classes.paper}>
@@ -290,8 +272,8 @@ class product extends React.Component{
                       <DialogTitle>제품 추가</DialogTitle>
                           <DialogContent>
                               <DialogContentText>제품을 추가합니다.</DialogContentText>
-                              <TextField label="이름" type="text" name="name" value={this.state.name} onChange={this.handleValueChange}/><br/>
-                              <TextField label="분류" type="text" name="tag" value={this.state.tag} onChange={this.handleValueChange}/><br/>
+                              <TextField label="이름" type="text" name="name" value={this.state.name} onChange={this.handleValueChange}  required/><br/>
+                              <TextField label="분류" type="text" name="tag" value={this.state.tag} onChange={this.handleValueChange}  required/><br/>
                               <TextField label="구매" type="number" name="productbuy" value={this.state.productbuy} onChange={this.handleValueChange}/><br/>
                               <TextField label="판매" type="number" name="productsell" value={this.state.productsell} onChange={this.handleValueChange}/><br/>
                           </DialogContent>
@@ -325,12 +307,12 @@ class product extends React.Component{
                           </TableHead>
                           <TableBody>
                             <TableRow>
-                              
                             </TableRow>
                           </TableBody>
                         </Table>
                       </DialogContent>
                       <DialogActions>
+                        <Button variant="outlined" color="primary">추가</Button>
                         <Button variant="outlined" color="primary" onClick={this.handleDetail}>확인</Button>
                       </DialogActions>
                   </Dialog>
@@ -369,6 +351,29 @@ class product extends React.Component{
 
                 </TableBody>
               </Table>
+
+
+
+
+              let filter = this.state.products ? Object.keys(this.state.products).filter(id => {
+            const product = this.state.products[id];
+            return(
+                <div key={id}>
+                  <Card>
+                    <CardContent>
+                      <Typography variant="h5" component="h2">{product.name}</Typography>
+                      <Typography className={classes.pos} color="textSecondary">{product.tag === '게임'}</Typography>
+                      <Typography variant="body2" component="p">제품구입: {product.productbuy}</Typography>
+                      <Typography variant="body2" component="p">제품사용: {product.productsell}</Typography>
+                      <Typography variant="body2" component="p">제품재고: {product.productcurrent}</Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button size="small" onClick={this.handleDetail}>자세히</Button><Button size="small" onClick={() => {this.delToggle(id)}}>삭제</Button>
+                    </CardActions>
+                  </Card>
+                </div>
+            )
+          }): <div/>
 */
 
 export default withStyles (styles) (product);

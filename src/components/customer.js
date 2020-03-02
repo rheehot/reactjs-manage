@@ -25,6 +25,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+//import CheckBox from '@material-ui/core/Checkbox';
 /*import DateFnsUtils from '@date-io/date-fns';
 import { MulPickersUtilProvider } from '@material-ui/pickers';*/
 
@@ -70,8 +71,8 @@ const styles = theme => ({
   });
 
 class customer extends React.Component{
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state={
       customers: {},
       delTargetId: '',
@@ -93,8 +94,8 @@ class customer extends React.Component{
       phone: '',
       pay: '',
       left: '',
-      completed: 0,
-      searchKeyword: ''
+      searchKeyword: '',
+      selValue: ''
     };
     this.searchValueChange = this.searchValueChange.bind(this);
   }
@@ -284,6 +285,32 @@ class customer extends React.Component{
       const cellList = ["이름","전화번호","코스","1차","2차","예정일","설정"]
       const delid = this.state.delTargetId;
       const detailid = this.state.detailTargetId;
+      const customers = []
+      for(let key in this.state.customers) {
+        customers.push(this.state.customers[key])
+      }
+      
+      const renderFilteredRows = () =>{
+        return customers.map(customer => {
+          if (customer.name.includes(this.state.searchKeyword)){
+            return(
+              <TableRow>
+                <TableCell align="center">{customer.name}</TableCell>
+                <TableCell align="center">{customer.phone}</TableCell>
+                <TableCell align="center">{customer.course}</TableCell>
+                <TableCell align="center">{customer.first}</TableCell>
+                <TableCell align="center">{customer.second}</TableCell>
+                <TableCell align="center">{customer.birth}</TableCell>
+                <TableCell align="center"><Button variant="contained" color="primary" onClick={() => {this.detailToggle(delid)}} className={classes.button}>자세히</Button>
+                <Button variant="contained" color="secondary" onClick={()=>{this.delToggle(delid)}} className={classes.button}>삭제</Button></TableCell>
+              </TableRow>
+            )
+          } else{
+            return null
+          }
+        })
+      }
+
       return(
         <div className={classes.root}>
           <Paper className={classes.paper}>
@@ -298,27 +325,15 @@ class customer extends React.Component{
                   </TableRow>
                 </TableHead> 
                 <TableBody>
-                  {this.state.customers ? Object.keys(this.state.customers).map(id => {
-                    const customer = this.state.customers[id];
-                    return(
-                      <TableRow key={id}>
-                        <TableCell align="center">{customer.name}</TableCell>
-                        <TableCell align="center">{customer.phone}</TableCell>
-                        <TableCell align="center">{customer.course}</TableCell>
-                        <TableCell align="center">{customer.first}</TableCell>
-                        <TableCell align="center">{customer.second}</TableCell>
-                        <TableCell align="center">{customer.birth}</TableCell>
-                        <TableCell align="center"><Button variant="contained" color="primary" onClick={() => {this.detailToggle(id)}} className={classes.button}>자세히</Button>
-                        <Button variant="contained" color="secondary" onClick={()=>{this.delToggle(id)}} className={classes.button}>삭제</Button></TableCell>
-                      </TableRow>
-                    )
-                  }) : 
-                  <TableRow>
-                    <TableCell colSpan="7" align="center">
-                      <Typography align="center">고객정보가 존재하지 않거나 서버로부터 응답이 없습니다.<br/>고객정보를 추가하시려면 아래 <AddIcon style={{fontSize:13}}/> 버튼을 클릭하여 고객정보를 추가하십시오.</Typography>
-                    </TableCell>
-                  </TableRow>}
-                  </TableBody>
+                  {this.state.customers && renderFilteredRows()}
+                  {!this.state.customers && (
+                    <TableRow>
+                      <TableCell colSpan="7" align="center">
+                        <Typography>고객정보가 존재하지 않거나 서버로부터 응답이 없습니다.<br/>고객정보를 추가하시려면 아래 <AddIcon style={{fontSize:13}}/> 버튼을 클릭하여 고객정보를 추가하십시오.</Typography>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
                 </Table>
             </Paper>
             </div>
@@ -331,17 +346,17 @@ class customer extends React.Component{
               <DialogContentText>고객정보를 추가합니다.</DialogContentText>
               <Grid container spacing={1}>
                 <Grid item xs={4}>
-                  <TextField label="이름" type="text" name="name" value={this.state.name} onChange={this.handleValueChange}/>
+                  <TextField label="이름" type="text" name="name" value={this.state.name} onChange={this.handleValueChange} required/>
                     </Grid>
                 <Grid item xs={4}>
-                  <TextField label="전화번호" type="text" name="phone" value={this.state.phone} onChange={this.handleValueChange}/>
+                  <TextField label="전화번호" type="text" name="phone" value={this.state.phone} onChange={this.handleValueChange} required/>
                 </Grid>
                 <Grid item xs={4}>
-                  <TextField label="예정일" type="date" name="birth" value={this.state.birth}  InputLabelProps={{shrink:true}} onChange={this.handleValueChange}/>
+                  <TextField label="예정일" type="date" name="birth" value={this.state.birth}  InputLabelProps={{shrink:true}} onChange={this.handleValueChange} required/>
                 </Grid>
                 <Grid item xs={4}>
                   <FormControl className={classes.formControl}>
-                    <InputLabel>코스</InputLabel>
+                    <InputLabel required>코스</InputLabel>
                       <Select id="course-select-label" value={this.state.course} onChange={this.handleValueChange}>
                         <MenuItem value={3000000}>미정</MenuItem>
                         <MenuItem value={3000000}>로얄</MenuItem>
@@ -353,16 +368,16 @@ class customer extends React.Component{
                   </FormControl>
                 </Grid>
                 <Grid item xs={4}>
-                  <TextField label="예치금" type="text" name="firstpay" value={this.state.firstpay} onChange={this.handleValueChange}/>
+                  <TextField label="예치금" type="text" name="firstpay" value={this.state.firstpay} onChange={this.handleValueChange} required/>
                 </Grid>
                 <Grid item xs={4}>
                   <TextField label="잔액" type="number" name="amount" value={this.state.amount} onChange={this.handleValueChange}/>
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField label="1차" type="date" name="first" value={this.state.first} onChange={this.handleValueChange} InputLabelProps={{shrink:true}}/>
+                  <TextField label="1차" type="date" name="first" value={this.state.first} onChange={this.handleValueChange} InputLabelProps={{shrink:true}} required/>
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField label="2차" type="date" name="second" value={this.state.second} InputLabelProps={{shrink:true}} onChange={this.handleValueChange}/>
+                  <TextField label="2차" type="date" name="second" value={this.state.second} InputLabelProps={{shrink:true}} onChange={this.handleValueChange} required/>
                 </Grid>
               </Grid> 
             </DialogContent>
@@ -371,12 +386,12 @@ class customer extends React.Component{
               <Button variant="outlined" color="primary" onClick={this.handleDialogToggle}>닫기</Button>
             </DialogActions>
           </Dialog>
-          <Dialog open={this.state.dialogdel} onClose={() => {this.delToggle(delid)}} key={delid}>
+          <Dialog open={this.state.dialogdel} onClose={() => {this.delToggle(customer)}} key={customer}>
             <DialogTitle>경고</DialogTitle>
               <DialogContent>
                  <DialogContentText>고객정보를 삭제하시겠습니까?</DialogContentText>
                 <DialogActions>
-                 <Button variant="contained" color="secondary" onClick={() => {this.handleDelete(delid)}}>예</Button>
+                 <Button variant="contained" color="secondary" onClick={() => {this.handleDelete(customer)}}>예</Button>
                  <Button variant="outlined" color="primary" onClick={this.delToggle}>아니오</Button>
                 </DialogActions>
               </DialogContent>
@@ -406,7 +421,6 @@ class customer extends React.Component{
                   </Alert>
             </SnackBar>
         </div>
-      
       )
     }
   }
@@ -428,24 +442,16 @@ class customer extends React.Component{
   현금,상품권 : 현금영수증
   카드 : 카드번호,승인번호
 
-
-
-
-
-  <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="demo-dialog-native">Age</InputLabel>
-              <Select
-                native
-                value={age}
-                onChange={handleChange}
-                input={<Input id="demo-dialog-native" />}
-              >
-                <option value="" />
-                <option value={10}>Ten</option>
-                <option value={20}>Twenty</option>
-                <option value={30}>Thirty</option>
-              </Select>
-            </FormControl>
+                      <TableRow key={id}>
+                        <TableCell align="center">{customer.name}</TableCell>
+                        <TableCell align="center">{customer.phone}</TableCell>
+                        <TableCell align="center">{customer.course}</TableCell>
+                        <TableCell align="center">{customer.first}</TableCell>
+                        <TableCell align="center">{customer.second}</TableCell>
+                        <TableCell align="center">{customer.birth}</TableCell>
+                        <TableCell align="center"><Button variant="contained" color="primary" onClick={() => {this.detailToggle(id)}} className={classes.button}>자세히</Button>
+                        <Button variant="contained" color="secondary" onClick={()=>{this.delToggle(id)}} className={classes.button}>삭제</Button></TableCell>
+                      </TableRow>
   */
   //label="코스" type="text" name="course" <TextField label="코스" type="text" name="course" value={this.state.course} onChange={this.handleValueChange}/>
   
