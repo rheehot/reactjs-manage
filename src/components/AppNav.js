@@ -23,10 +23,6 @@ const styles ={
     },
     menuButton: {
         marginRight:'auto',
-        '&:hover': {
-            opacity: 0.8,
-            transition: '0.2s'
-         },
     },
     drawer:{
         width: drawerWidth,
@@ -43,7 +39,6 @@ const styles ={
             opacity: 0.8,
             transition: '0.2s'
          },
-        
     },
     icon:{
         verticalAlign: 'middle',
@@ -73,7 +68,7 @@ class AppNav extends React.Component{
                 <div className={classes.root}>
                 <AppBar position="static">
                     <IconButton className={classes.menuButton} color="inherit" onClick={this.handleDrawerToggle}>
-                        <MenuIcon className={classes.icon}/><Typography className={classes.typo} variant="h5">React 산전케어 프로그램</Typography>
+                        <MenuIcon className={classes.icon}/><Typography variant="h5">React 산전케어 프로그램</Typography>
                     </IconButton>
                 </AppBar>
                 <Drawer open={this.state.toggle} className={classes.drawer} classes={{paper: classes.drawerPaper}}>
