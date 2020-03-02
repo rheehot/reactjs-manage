@@ -292,7 +292,7 @@ class customer extends React.Component{
       
       const renderFilteredRows = () =>{
         return customers.map(customer => {
-          if (customer.name.includes(this.state.searchKeyword)){
+          if (customer.name.includes(this.state.searchKeyword)||customer.phone.includes(this.state.searchKeyword)){
             return(
               <TableRow>
                 <TableCell align="center">{customer.name}</TableCell>
