@@ -1,33 +1,35 @@
-import 'date-fns';
 import React from 'react';
+
 import Table from '@material-ui/core/Table';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/tableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
+
 import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
+
+import Typography from '@material-ui/core/Typography';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
+import InputBase from '@material-ui/core/InputBase';
+
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import InputBase from '@material-ui/core/InputBase';
+
 import SnackBar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-import Typography from '@material-ui/core/Typography';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
+
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-//import CheckBox from '@material-ui/core/Checkbox';
-/*import DateFnsUtils from '@date-io/date-fns';
-import { MulPickersUtilProvider } from '@material-ui/pickers';*/
+import { withStyles } from '@material-ui/core/styles';
 
 const databaseURL="https://customer-5b5d0.firebaseio.com"
 
@@ -250,12 +252,11 @@ class customer extends React.Component{
     
     handleDelete = () => {
       this.delToggle();
-      this._delete(this.state.delTargetId); 
+      this._delete(customer.id); 
     }
 
     delToggle = id => {
       this.setState({
-        delTargetId: id || this.state.delTargetId,
         dialogdel: !this.state.dialogdel
       })
     }
@@ -283,26 +284,24 @@ class customer extends React.Component{
     render(){
       const {classes} = this.props;
       const cellList = ["이름","전화번호","코스","1차","2차","예정일","설정"]
-      const delid = this.state.delTargetId;
       const detailid = this.state.detailTargetId;
       const customers = []
       for(let key in this.state.customers) {
         customers.push(this.state.customers[key])
       }
-      
       const renderFilteredRows = () =>{
-        return customers.map(customer => {
-          if (customer.name.includes(this.state.searchKeyword)||customer.phone.includes(this.state.searchKeyword)){
+        return customers.map((customer,index) => {
+          if (customer.name.includes(this.state.searchKeyword)){
             return(
-              <TableRow>
+              <TableRow key={index}>
                 <TableCell align="center">{customer.name}</TableCell>
                 <TableCell align="center">{customer.phone}</TableCell>
                 <TableCell align="center">{customer.course}</TableCell>
                 <TableCell align="center">{customer.first}</TableCell>
                 <TableCell align="center">{customer.second}</TableCell>
                 <TableCell align="center">{customer.birth}</TableCell>
-                <TableCell align="center"><Button variant="contained" color="primary" onClick={() => {this.detailToggle(delid)}} className={classes.button}>자세히</Button>
-                <Button variant="contained" color="secondary" onClick={()=>{this.delToggle(delid)}} className={classes.button}>삭제</Button></TableCell>
+                <TableCell align="center"><Button variant="contained" color="primary" onClick={() => {this.detailToggle(customer.id)}} className={classes.button}>자세히</Button>
+                <Button variant="contained" color="secondary" onClick={()=>{this.delToggle(customer.id)}} className={classes.button}>삭제</Button></TableCell>
               </TableRow>
             )
           } else{
@@ -386,12 +385,12 @@ class customer extends React.Component{
               <Button variant="outlined" color="primary" onClick={this.handleDialogToggle}>닫기</Button>
             </DialogActions>
           </Dialog>
-          <Dialog open={this.state.dialogdel} onClose={() => {this.delToggle(customer)}} key={customer}>
+          <Dialog open={this.state.dialogdel} onClose={() => {this.delToggle(customers.id)}}>
             <DialogTitle>경고</DialogTitle>
               <DialogContent>
                  <DialogContentText>고객정보를 삭제하시겠습니까?</DialogContentText>
                 <DialogActions>
-                 <Button variant="contained" color="secondary" onClick={() => {this.handleDelete(customer)}}>예</Button>
+                 <Button variant="contained" color="secondary" onClick={() => {this.handleDelete(customer.id)}}>예</Button>
                  <Button variant="outlined" color="primary" onClick={this.delToggle}>아니오</Button>
                 </DialogActions>
               </DialogContent>
