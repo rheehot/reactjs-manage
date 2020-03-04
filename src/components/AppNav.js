@@ -36,17 +36,25 @@ const styles ={
         alignItems: 'center',
         display: 'flex',
         '&:hover': {
-            opacity: 0.8,
-            transition: '0.2s'
+            transform: 'scale(1.1)',
+            transition: '0.3s'
          },
+        '&' : {
+            transform: 'scale(1.0)',
+            transition: '0.3s'
+        }
     },
     icon:{
         verticalAlign: 'middle',
         marginRight: 15,
         '&:hover': {
-            opacity: 0.8,
-            transition: '0.2s'
+            transform: 'scale(1.2)',
+            transition: '0.3s'
          },
+        '&' : {
+            transform: 'scale(1.0)',
+            transition: '0.3s'
+        }
     },
     close:{
         marginLeft: 4
