@@ -258,7 +258,6 @@ class customer extends React.Component {
     })
       .then(res => {
         if (res.status !== 200) {
-          this.delFailedOpen();
           throw new Error(res.statusText);
         }
         return res.json();
