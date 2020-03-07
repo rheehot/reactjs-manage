@@ -330,7 +330,7 @@ class customer extends React.Component {
                   variant="contained"
                   color="primary"
                   onClick={() => {
-                    this.detailToggle(customer.id);
+                    this.detailToggle(detailid);
                   }}
                   className={classes.button}
                 >
@@ -340,7 +340,10 @@ class customer extends React.Component {
                   variant="contained"
                   color="secondary"
                   onClick={() => {
-                    this.delToggle(customer.id);
+                    this.setState({ delTargetId: customer }, () => {
+                      console.log(this.state.delTargetId);
+                      this.delToggle(delid);
+                    });
                   }}
                   className={classes.button}
                 >
