@@ -85,6 +85,7 @@ class customer extends React.Component {
       dialogdetail: false,
       addalert: false,
       delalert: false,
+      id: "",
       name: "",
       course: "",
       coursebal: "",
@@ -187,6 +188,7 @@ class customer extends React.Component {
 
   clear = () => {
     this.setState({
+      id: "",
       name: "",
       course: "",
       coursebal: "",
@@ -340,9 +342,9 @@ class customer extends React.Component {
                   variant="contained"
                   color="secondary"
                   onClick={() => {
-                    this.setState({ delTargetId: customer }, () => {
-                      console.log(this.state.delTargetId);
-                      this.delToggle(delid);
+                    this.setState({ delTargetId: Object.keys(this.state.customers)[id] }, () => {
+                      console.log(Object.keys(this.state.customers)[id]);
+                      this.delToggle(Object.keys(this.state.customers)[id]);
                     });
                   }}
                   className={classes.button}
