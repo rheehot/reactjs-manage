@@ -523,54 +523,6 @@ class product extends React.Component {
 바디(오일,크림)
 페이스
 부자재
-
-<Button color="primary">분류4</Button>
-<Button color="primary">분류5</Button>
-
-              <Table className={classes.table}>
-                <TableHead>
-                  <TableRow>
-                    {cellList.map(c => {return <TableCell align="center" className={classes.tableHead} key={c}>{c}</TableCell>})}
-                  </TableRow>
-                </TableHead> 
-                <TableBody>
-                  <TableRow>
-
-                </TableBody>
-              </Table>
-
-
-
-
-              let filter = this.state.products ? Object.keys(this.state.products).filter(id => {
-            const product = this.state.products[id];
-            return(
-                <div key={id}>
-                  <Card>
-                    <CardContent>
-                      <Typography variant="h5" component="h2">{product.name}</Typography>
-                      <Typography className={classes.pos} color="textSecondary">{product.tag === '게임'}</Typography>
-                      <Typography variant="body2" component="p">제품구입: {product.productbuy}</Typography>
-                      <Typography variant="body2" component="p">제품사용: {product.productsell}</Typography>
-                      <Typography variant="body2" component="p">제품재고: {product.productcurrent}</Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button size="small" onClick={this.handleDetail}>자세히</Button><Button size="small" onClick={() => {this.delToggle(id)}}>삭제</Button>
-                    </CardActions>
-                  </Card>
-                </div>
-            )
-          }): <div/>
-
-          <Grid item xs={12}>
-              <Typography align="center">
-                제품이 없거나 서버로부터 응답이 없습니다.
-                <br />
-                제품을 추가하시려면 아래 + 버튼을 클릭하여 제품을 추가하십시오.
-              </Typography>
-            </Grid>
-
-            
 */
 
 export default withStyles(styles)(product);
