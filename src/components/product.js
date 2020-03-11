@@ -24,6 +24,7 @@ import TableCell from "@material-ui/core/tableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import Table from "@material-ui/core/Table";
+import SearchIcon from "@material-ui/icons/Search";
 
 const databaseURL = "https://customer-5b5d0.firebaseio.com";
 
@@ -57,13 +58,20 @@ const styles = theme => ({
     marginLeft: 18,
     marginRight: 18,
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
+    display: "flex",
+    flex: 1,
+    alignItems: "center"
   },
-  searchbar: {
-    marginLeft: "10px",
-    marginRight: "10px",
-    marginTop: "10px",
-    marginBottom: "10px"
+  searchBar: {
+    marginLeft: "15px",
+    marginRight: "40px",
+    marginTop: "15px",
+    marginBottom: "15px"
+  },
+  searchIcon: {
+    marginLeft: "15px",
+    display: "flex"
   }
 });
 
@@ -340,13 +348,13 @@ class product extends React.Component {
     return (
       <div className={classes.root}>
         <Paper className={classes.paper}>
+          <SearchIcon className={classes.searchIcon} />
           <InputBase
-            className={classes.searchbar}
+            className={classes.searchBar}
             name="searchKeyword"
             onChange={this.searchInput}
             value={this.state.searchKeyword}
-            placeholder="검색"
-          ></InputBase>
+          />
           <ButtonGroup
             className={classes.button}
             variant="outlined"

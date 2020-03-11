@@ -17,6 +17,7 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import TextField from "@material-ui/core/TextField";
 import InputBase from "@material-ui/core/InputBase";
+import SearchIcon from "@material-ui/icons/Search";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -46,6 +47,15 @@ const styles = theme => ({
     marginTop: 10,
     marginBottom: 10
   },
+  toolPaper: {
+    display: "flex",
+    flex: 1,
+    alignItems: "center",
+    marginLeft: 18,
+    marginRight: 18,
+    marginTop: 10,
+    marginBottom: 10
+  },
   table: {
     minWidth: 1080
   },
@@ -62,6 +72,9 @@ const styles = theme => ({
     marginRight: "15px",
     marginTop: "15px",
     marginBottom: "15px"
+  },
+  searchIcon: {
+    marginLeft: "15px"
   },
   button: {
     marginLeft: 5,
@@ -364,15 +377,16 @@ class customer extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Paper className={classes.paper}>
+        <Paper className={classes.toolPaper}>
+          <SearchIcon className={classes.searchIcon} />
           <InputBase
             name="searchKeyword"
-            placeholder="검색"
             className={classes.searchBar}
             value={this.state.searchKeyword}
             onChange={this.searchValueChange}
           />
         </Paper>
+
         <div>
           <Paper className={classes.paper} elevation={3}>
             <Table className={classes.table}>
