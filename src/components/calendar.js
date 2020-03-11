@@ -8,6 +8,7 @@ import "tui-date-picker/dist/tui-date-picker.css";
 import "tui-time-picker/dist/tui-time-picker.css";
 import Calendar from "@toast-ui/react-calendar";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
+import SearchIcon from "@material-ui/icons/Search";
 /*import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
@@ -45,7 +46,13 @@ const styles = theme => ({
     marginLeft: 18,
     marginRight: 18,
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
+    display: "flex",
+    flex: 1,
+    alignItems: "center"
+  },
+  searchIcon: {
+    marginLeft: "15px"
   },
   searchbar: {
     marginLeft: "10px",
@@ -111,6 +118,7 @@ class calendar extends React.Component {
     return (
       <div className={classes.root}>
         <Paper className={classes.paper} elevation={3}>
+          <SearchIcon className={classes.searchIcon} />
           <InputBase className={classes.searchbar} placeholder="검색"></InputBase>
           <ButtonGroup variant="outlined" color="primary">
             <Button onClick={this.setViewToDay}>일간</Button>

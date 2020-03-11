@@ -354,6 +354,7 @@ class product extends React.Component {
             name="searchKeyword"
             onChange={this.searchInput}
             value={this.state.searchKeyword}
+            placeholder="검색"
           />
           <ButtonGroup
             className={classes.button}

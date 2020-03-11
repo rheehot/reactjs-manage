@@ -384,6 +384,7 @@ class customer extends React.Component {
             className={classes.searchBar}
             value={this.state.searchKeyword}
             onChange={this.searchValueChange}
+            placeholder="검색"
           />
         </Paper>
 
