@@ -273,6 +273,54 @@ class product extends React.Component {
     const { classes } = this.props;
     const id = this.targetId;
     const cellList = ["구입일자", "구입수량", "사용일자", "사용수량", "재고현황", "설정"];
+    const products = [];
+    for (let key in this.state.products) {
+      products.push(this.state.products[key]);
+    }
+    const renderFilteredComponent = () => {
+      return products.map((product, id) => {
+        if (product.name.includes(this.state.searchKeyword)) {
+          return (
+            <Card key={id} className={classes.card}>
+              <CardContent>
+                <Typography variant="h5" component="h2">
+                  {product.name}
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  {product.tag}
+                </Typography>
+                <Typography variant="body2" component="p">
+                  제품구입: {product.productbuy}
+                </Typography>
+                <Typography variant="body2" component="p">
+                  제품사용: {product.productsell}
+                </Typography>
+                <Typography variant="body2" component="p">
+                  제품재고: {product.productcurrent}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small" onClick={this.handleDetail}>
+                  자세히
+                </Button>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    this.setState({ delTargetId: Object.keys(this.state.products)[id] }, () => {
+                      this.delToggle(Object.keys(this.state.products)[id]);
+                    });
+                  }}
+                >
+                  삭제
+                </Button>
+              </CardActions>
+            </Card>
+          );
+        } else {
+          return null;
+        }
+      });
+    };
     return (
       <div className={classes.root}>
         <Paper className={classes.paper}>
@@ -295,60 +343,20 @@ class product extends React.Component {
             <Button color="primary">부자재</Button>
           </ButtonGroup>
         </Paper>
-        <Grid container spacing={0} justify="flex-start">
-          {this.state.products ? (
-            Object.keys(this.state.products).map(id => {
-              const product = this.state.products[id];
-              return (
-                <div key={id}>
-                  <Grid item xs={12}>
-                    <Card className={classes.card}>
-                      <CardContent>
-                        <Typography variant="h5" component="h2">
-                          {product.name}
-                        </Typography>
-                        <Typography className={classes.pos} color="textSecondary">
-                          {product.tag}
-                        </Typography>
-                        <Typography variant="body2" component="p">
-                          제품구입: {product.productbuy}
-                        </Typography>
-                        <Typography variant="body2" component="p">
-                          제품사용: {product.productsell}
-                        </Typography>
-                        <Typography variant="body2" component="p">
-                          제품재고: {product.productcurrent}
-                        </Typography>
-                      </CardContent>
-                      <CardActions>
-                        <Button size="small" onClick={this.handleDetail}>
-                          자세히
-                        </Button>
-                        <Button
-                          size="small"
-                          onClick={() => {
-                            this.delToggle(id);
-                          }}
-                        >
-                          삭제
-                        </Button>
-                      </CardActions>
-                    </Card>
-                  </Grid>
-                </div>
-              );
-            })
-          ) : (
+        <div>
+          <Grid container justify="flex-start">
+            {this.state.products && renderFilteredComponent(product.id)}
             <Grid item xs={12}>
-              <Typography align="center">
-                제품이 없거나 서버로부터 응답이 없습니다.
-                <br />
-                제품을 추가하시려면 아래 <AddIcon style={{ fontSize: 13 }} />
-                버튼을 클릭하여 제품을 추가하십시오.
-              </Typography>
+              {!this.state.products && (
+                <Typography align="center">
+                  제품이 없거나 서버로부터 응답이 없습니다.
+                  <br />
+                  제품을 추가하시려면 아래 + 버튼을 클릭하여 제품을 추가하십시오.
+                </Typography>
+              )}
             </Grid>
-          )}
-        </Grid>
+          </Grid>
+        </div>
         <Fab color="primary" className={classes.fab} onClick={this.handleDialogToggle}>
           <AddIcon />
         </Fab>
@@ -529,6 +537,16 @@ class product extends React.Component {
                 </div>
             )
           }): <div/>
+
+          <Grid item xs={12}>
+              <Typography align="center">
+                제품이 없거나 서버로부터 응답이 없습니다.
+                <br />
+                제품을 추가하시려면 아래 + 버튼을 클릭하여 제품을 추가하십시오.
+              </Typography>
+            </Grid>
+
+            
 */
 
 export default withStyles(styles)(product);
