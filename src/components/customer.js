@@ -395,7 +395,7 @@ class customer extends React.Component {
                       <Typography>
                         고객정보가 존재하지 않거나 서버로부터 응답이 없습니다.
                         <br />
-                        고객정보를 추가하시려면 아래 + 버튼을 클릭하여 고객정보를 추가하십시오.
+                        고객정보를 추가하시려면 아래 ㅇ 버튼을 클릭하여 고객정보를 추가하십시오.
                       </Typography>
                     </TableCell>
                   </TableRow>
