@@ -332,7 +332,10 @@ class customer extends React.Component {
                   variant="contained"
                   color="primary"
                   onClick={() => {
-                    this.detailToggle(detailid);
+                    this.setState({ detailTargetId: Object.keys(this.state.name) }, () => {
+                      this.detailToggle(Object.keys(this.state.name));
+                      console.log(this.detailToggle);
+                    });
                   }}
                   className={classes.button}
                 >
@@ -343,7 +346,6 @@ class customer extends React.Component {
                   color="secondary"
                   onClick={() => {
                     this.setState({ delTargetId: Object.keys(this.state.customers)[id] }, () => {
-                      console.log(Object.keys(this.state.customers)[id]);
                       this.delToggle(Object.keys(this.state.customers)[id]);
                     });
                   }}
@@ -544,7 +546,7 @@ class customer extends React.Component {
           </DialogContent>
         </Dialog>
         <Dialog open={this.state.dialogdetail} onClose={() => this.detailToggle(detailid)}>
-          <DialogTitle>{}님의 정보</DialogTitle>
+          <DialogTitle>{customer.name}님의 정보</DialogTitle>
           <DialogContent>
             <DialogContentText>이름: {}</DialogContentText>
             <DialogContentText>1차: {}</DialogContentText>

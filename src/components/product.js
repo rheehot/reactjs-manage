@@ -80,9 +80,9 @@ class product extends React.Component {
       targetId: "",
       name: "",
       tag: "",
-      productbuy: "",
-      productsell: "",
-      productcurrent: "",
+      productbuy: 0,
+      productsell: 0,
+      productcurrent: 0,
       buydate: "",
       usedate: "",
       searchKeyword: ""
@@ -103,6 +103,41 @@ class product extends React.Component {
     const responce = await fetch(`${databaseURL}/products.json`);
     const body = await responce.json();
     return body;
+  };
+
+  //재고현황 추가
+  _postTable(current) {
+    return fetch(`${databaseURL}/products/current.json`, {
+      method: "POST",
+      body: JSON.stringify(current)
+    })
+      .then(res => {
+        if (res.status !== 200) {
+          throw new Error(res.statusText);
+        }
+        return res.json();
+      })
+      .then(() => {
+        let nextState = this.state.products;
+        this.setState({ products: nextState });
+        this.componentDidMount();
+        this.addAlertOpen();
+      });
+  }
+
+  sumbitTable = () => {
+    const current = {
+      buydate: this.state.buydate,
+      productbuy: this.state.productbuy,
+      productsell: this.state.productsell,
+      selldate: this.state.selldate,
+      usedate: this.state.usedate,
+      current: this.state.productcurrent
+    };
+    if ((!current.buydate, !current.usedate, !current.selldate)) {
+      return;
+    }
+    this._postTable(current);
   };
 
   //데이터 추가
@@ -128,9 +163,7 @@ class product extends React.Component {
   clear = () => {
     this.setState({
       name: "",
-      tag: "",
-      productbuy: "",
-      productsell: ""
+      tag: ""
     });
   };
 
@@ -154,12 +187,10 @@ class product extends React.Component {
       tag: this.state.tag,
       productbuy: this.state.productbuy,
       productsell: this.state.productsell,
-      productcurrent: this.state.productbuy - this.state.productsell,
-      usedate: this.state.usedate,
-      selldate: this.state.selldate
+      productcurrent: this.state.productcurrent
     };
     this.handleDialogToggle();
-    if (!product.name && !product.tag && !product.productbuy && !product.productsell) {
+    if (!product.name && !product.tag) {
       return;
     }
     this._post(product);
@@ -342,23 +373,6 @@ class product extends React.Component {
               onChange={this.handleValueChange}
               required
             />
-            <br />
-            <TextField
-              label="구매"
-              type="number"
-              name="productbuy"
-              value={this.state.productbuy}
-              onChange={this.handleValueChange}
-            />
-            <br />
-            <TextField
-              label="판매"
-              type="number"
-              name="productsell"
-              value={this.state.productsell}
-              onChange={this.handleValueChange}
-            />
-            <br />
           </DialogContent>
           <DialogActions>
             <Button
@@ -453,7 +467,7 @@ class product extends React.Component {
               추가
             </Button>
             <Button variant="outlined" color="primary" onClick={this.handleDetail}>
-              확인
+              닫기
             </Button>
           </DialogActions>
         </Dialog>
