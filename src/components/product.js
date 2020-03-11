@@ -85,7 +85,8 @@ class product extends React.Component {
       productcurrent: 0,
       buydate: "",
       usedate: "",
-      searchKeyword: ""
+      searchKeyword: "",
+      filterKeyword: ""
     };
   }
 
@@ -263,10 +264,22 @@ class product extends React.Component {
   //검색
   searchInput = e => {
     this.setState({ searchKeyword: e.target.value });
-    console.log(this.state.searchKeyword);
+    //console.log(this.state.searchKeyword);
   };
 
   //필터
+  filterAll = () => {
+    this.setState({ filterKeyword: "" });
+  };
+  filterBody = () => {
+    this.setState({ filterKeyword: "바디" });
+  };
+  filterFace = () => {
+    this.setState({ filterKeyword: "페이스" });
+  };
+  filterOther = () => {
+    this.setState({ filterKeyword: "부자재" });
+  };
 
   //렌더(표시)
   render() {
@@ -279,7 +292,10 @@ class product extends React.Component {
     }
     const renderFilteredComponent = () => {
       return products.map((product, id) => {
-        if (product.name.includes(this.state.searchKeyword)) {
+        if (
+          product.name.includes(this.state.searchKeyword) &&
+          product.tag.includes(this.state.filterKeyword)
+        ) {
           return (
             <Card key={id} className={classes.card}>
               <CardContent>
@@ -337,10 +353,18 @@ class product extends React.Component {
             color="primary"
             aria-label="productTag"
           >
-            <Button color="primary">전체</Button>
-            <Button color="primary">바디</Button>
-            <Button color="primary">페이스</Button>
-            <Button color="primary">부자재</Button>
+            <Button color="primary" onClick={this.filterAll}>
+              전체
+            </Button>
+            <Button color="primary" onClick={this.filterBody}>
+              바디
+            </Button>
+            <Button color="primary" onClick={this.filterFace}>
+              페이스
+            </Button>
+            <Button color="primary" onClick={this.filterOther}>
+              부자재
+            </Button>
           </ButtonGroup>
         </Paper>
         <div>
